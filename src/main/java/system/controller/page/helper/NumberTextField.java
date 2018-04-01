@@ -1,10 +1,8 @@
 package system.controller.page.helper;
 
 import javafx.scene.control.TextField;
-import system.controller.page.listener.ControllerActiveListener;
 import system.controller.SpringContextUtil;
 import system.controller.page.listener.ControllerListener;
-import system.model.Client;
 import system.service.ClientService;
 import system.service.exception.NotFoundException;
 
