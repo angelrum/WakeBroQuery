@@ -1,15 +1,8 @@
 package system;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import system.HibernateUtil;
-import system.controller.BasicPageController;
-import system.model.Model;
+import system.old.model.Model;
 import system.view.FactoryPage;
 import system.view.PageEnum;
 

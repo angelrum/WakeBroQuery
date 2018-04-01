@@ -11,7 +11,7 @@
         <property name="format_sql">false</property>
         <property name="hbm2ddl.auto">update</property>
         <property name="connection.pool_size">5</property>
-        <mapping class="system.model.Person"/>
+        <mapping class="system.old.model.Person"/>
         <!--<mapping resource="system/PersonEntity.hbm.xml/>-->
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->

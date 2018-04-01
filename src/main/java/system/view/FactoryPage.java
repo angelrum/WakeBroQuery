@@ -6,8 +6,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import system.MainApp;
-import system.controller.*;
-import system.model.Model;
+import system.controller.page.BasicPageController;
+import system.old.controller.AddInQueuePersonController;
+import system.old.controller.RegistrationPersonController;
+import system.old.model.Model;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,9 +20,9 @@ import java.net.URL;
 public class FactoryPage {
     private Stage basicStage;
     private Model model;
-    private final URL startPage = MainApp.class.getResource("BasicPage.fxml");
-    private final URL registrationPage = MainApp.class.getResource("RegistrationPerson.fxml");
-    private final URL addInQueuePage = MainApp.class.getResource("AddPersonInQueue.fxml");
+    private final URL startPage = MainApp.class.getResource("page/BasicPage.fxml");
+    private final URL registrationPage = MainApp.class.getResource("page/RegistrationPerson.fxml");
+    private final URL addInQueuePage = MainApp.class.getResource("page/AddPersonInQueue.fxml");
     private BasicPageController basicPageController;
 
     private static FactoryPage ourInstance = new FactoryPage();
@@ -62,7 +64,7 @@ public class FactoryPage {
             loader.setLocation(startPage);
             Scene scene = new Scene(loader.load());
             basicPageController = loader.getController();
-            basicPageController.setModel(this.model);
+            //basicPageController.setModel(this.model);
             basicStage.setTitle("Программа WakeBro Queue");
             basicStage.setScene(scene);
             basicStage.show();
@@ -87,7 +89,7 @@ public class FactoryPage {
             controller.setModel(model);
             controller.refresh();
 
-            basicPageController.setRegistrationPersonController(controller);
+            //basicPageController.setRegistrationPersonController(controller);
 
             dialogStage.showAndWait();
         } catch (IOException e) {
@@ -109,7 +111,7 @@ public class FactoryPage {
             controller.setDialogStage(dialogStage);
             controller.setModel(model);
 
-            basicPageController.setAddInQueuePersonController(controller);
+            //basicPageController.setAddInQueuePersonController(controller);
 
             dialogStage.showAndWait();
 
