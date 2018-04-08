@@ -2,11 +2,15 @@ package system.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import system.MainApp;
 import system.controller.page.BasicPageController;
+import system.controller.page.ClientTicketListController;
+import system.controller.page.listener.ControllerActiveListener;
 import system.old.controller.AddInQueuePersonController;
 import system.old.controller.RegistrationPersonController;
 import system.old.model.Model;
@@ -23,7 +27,11 @@ public class FactoryPage {
     private final URL startPage = MainApp.class.getResource("page/BasicPage.fxml");
     private final URL registrationPage = MainApp.class.getResource("page/RegistrationPerson.fxml");
     private final URL addInQueuePage = MainApp.class.getResource("page/AddPersonInQueue.fxml");
-    private BasicPageController basicPageController;
+    private final URL clientTicketList = MainApp.class.getResource("page/ClientTicketList.fxml");
+    private final URL ticketList = MainApp.class.getResource("page/TicketSelect.fxml");
+
+
+    private ControllerActiveListener basicController;
 
     private static FactoryPage ourInstance = new FactoryPage();
 
@@ -55,6 +63,12 @@ public class FactoryPage {
             case ADD_IN_QUEUE:
                 showAddInQueue();
                 break;
+            case CLIENT_TICKET_LIST:
+                showClientTicketList();
+                break;
+            case TICKET_LIST:
+                showTicketList();
+                break;
         }
     }
 
@@ -63,7 +77,7 @@ public class FactoryPage {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(startPage);
             Scene scene = new Scene(loader.load());
-            basicPageController = loader.getController();
+            basicController = ((BasicPageController)loader.getController()).getControllerActive();
             //basicPageController.setModel(this.model);
             basicStage.setTitle("Программа WakeBro Queue");
             basicStage.setScene(scene);
@@ -97,6 +111,26 @@ public class FactoryPage {
         }
     }
 
+    private void showClientTicketList() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(clientTicketList);
+            BorderPane pane = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Добавить в очередь");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setScene(new Scene(pane));
+
+            ClientTicketListController controller =loader.getController();
+            controller.setClientId(basicController.getClientId());
+            controller.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showAddInQueue() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -120,5 +154,28 @@ public class FactoryPage {
         }
     }
 
+    private void showTicketList() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(ticketList);
+            BorderPane pane = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Выберите билет");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.setScene(new Scene(pane));
 
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAlert(String text, Stage dialogStage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.initOwner(dialogStage);
+        alert.setTitle("Ошибка!");
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
 }

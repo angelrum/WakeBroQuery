@@ -1,8 +1,10 @@
 package system.controller.to;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -17,19 +19,25 @@ import system.model.Ticket;
  */
 public class QueueRow {
 
-    private VBox boxButton;
+    private SimpleIntegerProperty id = new SimpleIntegerProperty();
 
-    private Label status;
+    private ObservableValue<VBox> boxButton;
 
-    private CheckBox cstatus;
+    private ObservableValue<Label> status;
 
-    private Button delete;
+    private ObservableValue<CheckBox> cstatus;
+
+    private ObservableValue<Button> delete;
 
     private Client client;
+
+    private StringProperty passName = new SimpleStringProperty();;
 
     private ClientTicket clientTicket;
 
     private Ticket ticket;
+
+    private int count = 1;
 
     public QueueRow(Client client, ClientTicket clientTicket, Ticket ticket) {
         this.client         = client;
@@ -38,23 +46,49 @@ public class QueueRow {
         init();
     }
 
+    public QueueRow(Client client, ClientTicket clientTicket, Ticket ticket, int count) {
+        this.client = client;
+        this.clientTicket = clientTicket;
+        this.ticket = ticket;
+        this.count = count;
+        init();
+    }
+
+    //основной блок инициализации
     private void init() {
         initDeleteButton();
         initStatusButton();
+        initPassName();
+    }
+
+    private void initPassName() {
+        switch (ticket.getPass()) {
+            case SECOND_PASS:
+                passName.setValue(
+                        String.format("%s (%s)",
+                        ticket.getPass().getName(),
+                        count));
+                break;
+            case ABN_PASS:
+                passName.setValue(ticket.getPass().getName());
+                break;
+        }
     }
 
     private void initDeleteButton() {
-        delete = new Button();
-        delete.getStyleClass().add("delete-person");
-        delete.setOnMouseClicked(event -> {
+        Button button = new Button();
+        button.getStyleClass().add("delete-person");
+        button.setOnMouseClicked(event -> {
             //listener.deleteColumnPerson(getThisPerson());
         });
+        delete = new SimpleObjectProperty<>(button);
+
     }
 
     private void initStatusButton() {
-        status = new Label();
-        cstatus = new CheckBox();
-        this.status.setLabelFor(cstatus);
+        Label status = new Label();
+        CheckBox cstatus = new CheckBox();
+        status.setLabelFor(cstatus);
         status.getStyleClass().add("lstatus-person");
         status.getStyleClass().add("lstatus-person-active");
         cstatus.getStyleClass().add("cstatus-person");
@@ -74,6 +108,9 @@ public class QueueRow {
                 //setActiveId();
             }
         });
+
+        this.status = new SimpleObjectProperty<>(status);
+        this.cstatus = new SimpleObjectProperty<>(cstatus);
     }
 
     public StringProperty getClientName() {
@@ -83,34 +120,26 @@ public class QueueRow {
     }
 
     public StringProperty getPassName() {
-        StringProperty name = new SimpleStringProperty();
-        name.setValue(ticket.getPass().getName());
-        return name;
+        return passName;
     }
 
-    public ObservableValue<VBox> getBoxButton() {
-        ObservableValue<VBox> value = new SimpleObjectProperty<>(boxButton);
-        return value;
+    public ObservableValue<VBox> boxButtonProperty() {
+        return boxButton;
     }
 
-    public ObservableValue<Label> getStatus() {
-        ObservableValue<Label> value = new SimpleObjectProperty<>(status);
-        return value;
+    public ObservableValue<Label> statusProperty() {
+        return status;
     }
 
-    public ObservableValue<CheckBox> getCstatus() {
-        ObservableValue<CheckBox> value = new SimpleObjectProperty<>(cstatus);
-        return value;
+    public ObservableValue<CheckBox> cstatusProperty() {
+        return cstatus;
     }
 
-    public ObservableValue<Button> getDelete() {
-        ObservableValue<Button> value = new SimpleObjectProperty<>(delete);
-        return value;
+    public ObservableValue<Button> deleteProperty() {
+        return delete;
     }
 
-    public ObservableValue<Label> getId() {
-        ObservableValue<Label> value = new SimpleObjectProperty<Label>();
-        value.getValue().setText(String.valueOf(1));
-        return value;
+    public SimpleIntegerProperty idProperty() {
+        return id;
     }
 }

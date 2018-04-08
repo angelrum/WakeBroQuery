@@ -7,6 +7,8 @@ import system.repository.TicketRepository;
 import system.service.TicketService;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static system.util.ValidationUtil.*;
 
 /**
@@ -36,6 +38,13 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<Ticket> getAll() {
         return checkNullOrEmptyList(repository.getAll());
+    }
+
+    public List<Ticket> getAllActive() {
+        List<Ticket> list = checkNullOrEmptyList(repository.getAll());
+        return list.stream()
+                .filter(ticket -> ticket.isEnable())
+                .collect(Collectors.toList());
     }
 
     public Ticket get(int ticketId) {

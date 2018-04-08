@@ -13,7 +13,7 @@ import static system.util.TicketUtil.*;
  *      @duration            длительность сета, по умолчанию 5 минут
  *      @year                год действия абонемента или сета
  *      @cost/weekendcost    стоимость/стоимость в выходные(для сетов)
- *      @date/month          длительность абонемента в днях/месяцах
+ *      @month               длительность абонемента в днях/месяцах
  * from AbstractDateIdEntity
  *      @createid            идентификатор создателя записи
  *      @create              дата добавления записи

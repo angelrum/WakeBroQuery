@@ -28,6 +28,8 @@ public class InMemoryClientTicketRepository implements ClientTicketRepository {
     public void init() {
         List<ClientTicket> list = Arrays.asList(
                 new ClientTicket(0, 0, 1),
+                new ClientTicket(0, 0, 1),
+                new ClientTicket(0, 0, 1),
                 new ClientTicket(0, 0, 0),
                 new ClientTicket(0, 0, 2, LocalDate.of(2017, 12, 3), LocalDate.of(2017, 12, 15))
         );

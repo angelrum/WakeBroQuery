@@ -29,7 +29,7 @@ public class NumberTextField extends TextField {
             super.replaceText(start, end, text);
             setTelnumberInFormat();
         } else if (text.matches("[0-9]*")
-                && getText().length() < 17) {
+                && check()) {
             super.replaceText(start, end, text);
             setTelnumberInFormat();
         }
@@ -63,6 +63,11 @@ public class NumberTextField extends TextField {
                 format = format.replaceFirst("_", t);
             setText(format);
         }
+    }
+
+    private boolean check() {
+        String line = getText().replaceAll("_", "");
+        return line.length()<formatNumber.length();
     }
 
     private void searchPerson(String number) {

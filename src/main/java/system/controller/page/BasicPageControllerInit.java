@@ -32,11 +32,11 @@ public class BasicPageControllerInit {
     private void queueInit() {
         controller.fioColumn.setCellValueFactory(cellData -> cellData.getValue().getClientName());
         controller.abnColumn.setCellValueFactory(cellData -> cellData.getValue().getPassName());
-        controller.lControl.setCellValueFactory(cellData -> cellData.getValue().getBoxButton());
-        controller.lStatusColumn.setCellValueFactory(cellData -> cellData.getValue().getStatus());
-        controller.cStatusColumn.setCellValueFactory(cellData -> cellData.getValue().getCstatus());
-        controller.deleteColumn.setCellValueFactory(cellData -> cellData.getValue().getDelete());
-        controller.idColumn.setCellValueFactory(cellData -> cellData.getValue().getId());
+        controller.lControl.setCellValueFactory(cellData -> cellData.getValue().boxButtonProperty());
+        controller.lStatusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
+        controller.cStatusColumn.setCellValueFactory(cellData -> cellData.getValue().cstatusProperty());
+        controller.deleteColumn.setCellValueFactory(cellData -> cellData.getValue().deleteProperty());
+        controller.idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
         controller.queue.setItems(Queue.getInstance().getQueueRows());
     }
 }

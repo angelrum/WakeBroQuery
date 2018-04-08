@@ -71,22 +71,4 @@ public class ClientTicket extends AbstractDateIdEntity {
     public Integer getTicketId() {
         return ticketId;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        ClientTicket ticket = (ClientTicket) o;
-        if (clientId != null ? !clientId.equals(ticket.clientId) : ticket.clientId != null) return false;
-        if (ticketId != null ? !ticketId.equals(ticket.ticketId) : ticket.ticketId != null) return false;
-        if (start != null ? !start.equals(ticket.start) : ticket.start != null) return false;
-        return end != null ? end.equals(ticket.end) : ticket.end == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = clientId != null ? clientId.hashCode() : 0;
-        result = 31 * result + (ticketId != null ? ticketId.hashCode() : 0);
-        result = 31 * result + (start != null ? start.hashCode() : 0);
-        result = 31 * result + (end != null ? end.hashCode() : 0);
-        return result;
-    }
 }

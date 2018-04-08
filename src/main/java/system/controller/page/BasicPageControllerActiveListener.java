@@ -9,6 +9,8 @@ import system.model.Client;
 import system.model.ClientTicket;
 import system.model.Ticket;
 import system.service.CustomerTicketService;
+import system.view.FactoryPage;
+import system.view.PageEnum;
 
 import java.util.Map;
 
@@ -42,16 +44,24 @@ public class BasicPageControllerActiveListener implements ControllerActiveListen
 
     //Добавляем пользователя в очередь
     public void clickSubmitButton() {
-        try {
-            Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
-            allActiveTicket.forEach((clientTicket, ticket) -> {
-                Queue.getInstance().insertRows(QueueHelper.transformToQueueRow(clientTicket, ticket));
-            });
-        } catch (Exception e) {
-            //ignore
-        } finally {
-            refresh();
+        switch (controller.submit.getSubmitEnum()) {
+            case ADD_IN_QUEUE:
+                FactoryPage.getInstance().showPage(PageEnum.CLIENT_TICKET_LIST);
+                break;
+            case REGISTRATION:
+                break;
         }
+        refresh();
+//        try {
+//            Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
+//            allActiveTicket.forEach((clientTicket, ticket) -> {
+//                Queue.getInstance().insertRows(QueueHelper.transformToQueueRow(clientTicket, ticket));
+//            });
+//        } catch (Exception e) {
+//            //ignore
+//        } finally {
+//            refresh();
+//        }
     }
 
     public void setClient(Client client) {
@@ -66,4 +76,8 @@ public class BasicPageControllerActiveListener implements ControllerActiveListen
         controller.submit.setText("Добавить в очередь", ButtonSubmitEnum.ADD_IN_QUEUE);
     }
 
+    @Override
+    public int getClientId() {
+        return controller.clientId;
+    }
 }

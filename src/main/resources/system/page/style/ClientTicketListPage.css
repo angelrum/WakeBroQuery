@@ -1,0 +1,32 @@
+.button-up,
+.button-down {
+    -fx-min-width: 40px;
+    -fx-min-height: 20px;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 40px;
+    -fx-alignment: baseline-center;
+    -fx-padding: 0;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.table-column{
+    -fx-text-alignment: center;
+    -fx-alignment: baseline-center;
+}
+
+.button-up {
+    -fx-background-image: url("../../image/up.png");
+}
+
+.button-down {
+    -fx-background-image: url("../../image/down.png");
+}
+
+.box {
+    -fx-alignment: center;
+}
+
+.column-center.table-cell {
+    -fx-alignment: center;
+}

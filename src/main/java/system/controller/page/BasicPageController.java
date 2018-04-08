@@ -37,7 +37,7 @@ public class BasicPageController implements ControllerListener{
     protected TableView<QueueRow> queue;
 
     @FXML
-    protected TableColumn<QueueRow, Label> idColumn;
+    protected TableColumn<QueueRow, Number> idColumn;
 
     @FXML
     protected TableColumn<QueueRow, VBox> lControl;
@@ -92,5 +92,9 @@ public class BasicPageController implements ControllerListener{
     @Override
     public void setClient(Client client) {
         controllerActive.setClient(client);
+    }
+
+    public ControllerActiveListener getControllerActive() {
+        return controllerActive;
     }
 }

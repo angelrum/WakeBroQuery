@@ -14,4 +14,6 @@ public interface ControllerActiveListener {
     void clickSubmitButton();
 
     void setClient(Client client);
+
+    int getClientId();
 }

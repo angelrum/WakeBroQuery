@@ -14,5 +14,7 @@ public interface TicketService {
 
     List<Ticket> getAll();
 
+    List<Ticket> getAllActive();
+
     Ticket get(int ticketId);
 }

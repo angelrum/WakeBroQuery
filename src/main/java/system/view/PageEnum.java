@@ -7,5 +7,7 @@ public enum PageEnum {
     BASIC_PAGE,
     REGISTRATION_PERSON_PAGE,
     ADD_IN_QUEUE,
-    LOGIN_PAGE;
+    LOGIN_PAGE,
+    CLIENT_TICKET_LIST,
+    TICKET_LIST;
 }
