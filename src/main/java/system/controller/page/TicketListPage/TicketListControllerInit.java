@@ -1,4 +1,4 @@
-package system.controller.page;
+package system.controller.page.TicketListPage;
 
 import javafx.collections.ObservableList;
 import system.controller.SpringContextUtil;
@@ -13,13 +13,13 @@ import java.util.List;
 /**
  * Created by vladimir on 08.04.2018.
  */
-public class TicketSelectControllerInit {
+public class TicketListControllerInit {
 
-    private TicketSelectController controller;
+    private TicketListController controller;
 
     private TicketService service = SpringContextUtil.getInstance().getBean(TicketService.class);
 
-    public TicketSelectControllerInit(TicketSelectController controller) {
+    public TicketListControllerInit(TicketListController controller) {
         this.controller = controller;
     }
 
@@ -39,6 +39,7 @@ public class TicketSelectControllerInit {
             List<Ticket> list = service.getAllActive();
             ObservableList<TicketRow> rows = TicketTableHelper.getTicketRowList(list);
             controller.tableView.setItems(rows);
+            controller.tableView.getSelectionModel().clearSelection();
         } catch (NotFoundException | NullPointerException e) {
             //controller.tableView.setItems(FXCollections.emptyObservableList());
         }

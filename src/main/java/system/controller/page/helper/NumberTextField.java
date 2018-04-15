@@ -1,10 +1,12 @@
 package system.controller.page.helper;
 
 import javafx.scene.control.TextField;
+import org.springframework.util.StringUtils;
 import system.controller.SpringContextUtil;
 import system.controller.page.listener.ControllerListener;
 import system.service.ClientService;
 import system.service.exception.NotFoundException;
+import system.util.ValidationUtil;
 
 import java.util.NoSuchElementException;
 
@@ -13,49 +15,54 @@ import java.util.NoSuchElementException;
  */
 public class NumberTextField extends TextField {
 
+    private final String formatNumber = "+_(___)___-__-__";
+
+    private final String equalsLine = "+(___)___-__-__";
+
     private ControllerListener listener;
 
     private ClientService service = SpringContextUtil.getInstance().getBean(ClientService.class);
-
-    private final String formatNumber = "+_(___)___-__-__";
 
     public void setListener(ControllerListener listener) {
         this.listener = listener;
     }
 
+    public NumberTextField() {
+        textProperty().addListener(observable -> initButton());
+    }
+
     @Override
     public void replaceText(int start, int end, String text) {
-        if (text.equals("")) {
+        if (StringUtils.isEmpty(text)) {
             super.replaceText(start, end, text);
-            setTelnumberInFormat();
-        } else if (text.matches("[0-9]*")
-                && check()) {
+            parseNumberToFormat();
+        } else if (text.matches("[0-9]*") && check()) {
             super.replaceText(start, end, text);
-            setTelnumberInFormat();
+            parseNumberToFormat();
         }
-        setButtonCancel();
+        initButton();
         setPositionCaret(text, start);
     }
 
-    private void setButtonCancel() {
+    private void initButton() {
         if (listener!=null) {
             if (getText().length() > 0) listener.cancelEnable();
             else listener.cancelDisable();
-            searchPerson(getText());                                //Куда перенести?
+            searchPerson(getText());
         }
     }
 
     private void setPositionCaret(String text, int start) {
-        if (text.equals(""))
+        if (StringUtils.isEmpty(text))
             positionCaret(start);
         else
-            positionCaret(getText().lastIndexOf(text)+1);
+            positionCaret(getText().lastIndexOf(text) + 1);
     }
 
-    private void setTelnumberInFormat() {
-        String format = new String(formatNumber);
+    private void parseNumberToFormat() {
+        String format = String.valueOf(formatNumber);
         String text = getText();
-        if ("+(___)___-__-__".equals(text)) {
+        if (equalsLine.equals(text)) {
             setText("");
         } else {
             text = text.replaceAll("[\\+|\\)|\\(|\\-]", "");
@@ -67,19 +74,17 @@ public class NumberTextField extends TextField {
 
     private boolean check() {
         String line = getText().replaceAll("_", "");
-        return line.length()<formatNumber.length();
+        return line.length() < formatNumber.length();
     }
 
     private void searchPerson(String number) {
-        try {
-            listener.setClient(service.getByNumber(number));
-        } catch (NotFoundException | NoSuchElementException e) {
+        if (ValidationUtil.checkTelNumber(number)) {
+            try {
+                listener.setClient(service.getByNumber(number));
+            } catch (NotFoundException | NoSuchElementException e) {
+                listener.refresh();
+            }
+        } else
             listener.refresh();
-        }
-//        Person person = listener.getModel().getByTelNumber(telNumber);
-//        if (person!=null) {
-//            listener.setPerson(person);
-//        } else
-//            listener.refresh();
     }
 }

@@ -1,11 +1,11 @@
 package system.util;
 
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import system.model.AbstractBaseEntity;
 import system.service.exception.NotFoundException;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by vladimir on 20.03.2018.
@@ -45,6 +45,19 @@ public class ValidationUtil {
     public static void checkNotFound(boolean flag, String msg) {
         if (!flag)
             throw new NotFoundException(msg);
+    }
+
+    public static boolean checkTelNumber(String number) {
+        String telnumber = number.replaceAll("[\\+|\\)|\\(|\\-|_]", "");
+        if (StringUtils.hasLength(telnumber)
+                && telnumber.length()==11)
+            return true;
+        return false;
+    }
+
+    public static <T> boolean indexExists(List<T> list, final int index) {
+        int size = list.size();
+        return index >= 0 && index < size;
     }
 
 

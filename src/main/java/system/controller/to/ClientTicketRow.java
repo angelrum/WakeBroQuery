@@ -7,6 +7,7 @@ import javafx.beans.value.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import system.model.ClientTicket;
+import system.model.Pass;
 import system.model.Ticket;
 
 /**
@@ -53,6 +54,7 @@ public class ClientTicketRow {
         type.setValue(ticket.getPass().getName());
         equipment.setSelected(ticket.isEquipment());
         equipment.setDisable(true);
+        equipment.getStyleClass().add("column");
         start.setValue(ticket.getStart().toString());
         end.setValue(ticket.getEnd().toString());
         dateEnd.setValue(clientTicket.getEnd()!=null?clientTicket.getEnd().toString():null);
@@ -67,7 +69,6 @@ public class ClientTicketRow {
         down.getStyleClass().add("button-down");
         control.getChildren().addAll(up, down);
         control.getStyleClass().add("box");
-        equipment.getStyleClass().add("column");
         initButtonAction();
     }
 
@@ -82,6 +83,10 @@ public class ClientTicketRow {
             down.setDisable(count.getValue().intValue()==1);
             up.setDisable(false);
         });
+        if (Pass.ABN_PASS
+                .equals(ticket.getPass()))
+            control.setDisable(true);
+
     }
 
     private void checkButton() {

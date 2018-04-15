@@ -1,11 +1,9 @@
-package system.controller.page;
+package system.controller.page.BasicPage;
 
-import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import system.MainApp;
 import system.controller.Queue;
-import system.controller.to.QueueRow;
 
 /**
  * Created by vladimir on 01.04.2018.

@@ -8,12 +8,11 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import system.MainApp;
-import system.controller.page.BasicPageController;
-import system.controller.page.ClientTicketListController;
+import system.controller.page.BasicPage.BasicPageController;
+import system.controller.page.ClientTicketPage.ClientTicketController;
+import system.controller.page.RegistrationPersonPage.RegistrationPersonController;
+import system.controller.page.TicketListPage.TicketListController;
 import system.controller.page.listener.ControllerActiveListener;
-import system.old.controller.AddInQueuePersonController;
-import system.old.controller.RegistrationPersonController;
-import system.old.model.Model;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,10 +22,8 @@ import java.net.URL;
  */
 public class FactoryPage {
     private Stage basicStage;
-    private Model model;
     private final URL startPage = MainApp.class.getResource("page/BasicPage.fxml");
     private final URL registrationPage = MainApp.class.getResource("page/RegistrationPerson.fxml");
-    private final URL addInQueuePage = MainApp.class.getResource("page/AddPersonInQueue.fxml");
     private final URL clientTicketList = MainApp.class.getResource("page/ClientTicketList.fxml");
     private final URL ticketList = MainApp.class.getResource("page/TicketSelect.fxml");
 
@@ -46,10 +43,6 @@ public class FactoryPage {
         this.basicStage = basicStage;
     }
 
-    public void setModel(Model model) {
-        this.model = model;
-    }
-
     public void showPage(PageEnum pageEnum) {
         switch (pageEnum) {
             case BASIC_PAGE:
@@ -59,9 +52,6 @@ public class FactoryPage {
                 break;
             case REGISTRATION_PERSON_PAGE:
                 showRegistrationPage();
-                break;
-            case ADD_IN_QUEUE:
-                showAddInQueue();
                 break;
             case CLIENT_TICKET_LIST:
                 showClientTicketList();
@@ -94,16 +84,13 @@ public class FactoryPage {
             loader.setLocation(registrationPage);
             GridPane pane = loader.load();
             Stage dialogStage = new Stage();
-            dialogStage.setTitle("Регистрация");
+            dialogStage.setTitle("Регистрация клиента");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setScene(new Scene(pane));
 
             RegistrationPersonController controller = loader.getController();
             controller.setDialogStage(dialogStage);
-            controller.setModel(model);
-            controller.refresh();
-
-            //basicPageController.setRegistrationPersonController(controller);
+            controller.setListener(basicController);
 
             dialogStage.showAndWait();
         } catch (IOException e) {
@@ -121,34 +108,11 @@ public class FactoryPage {
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setScene(new Scene(pane));
 
-            ClientTicketListController controller =loader.getController();
+            ClientTicketController controller =loader.getController();
             controller.setClientId(basicController.getClientId());
             controller.setDialogStage(dialogStage);
-
+            controller.check();
             dialogStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showAddInQueue() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(addInQueuePage);
-            GridPane pane = loader.load();
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Добавить в очередь");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.setScene(new Scene(pane));
-
-            AddInQueuePersonController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setModel(model);
-
-            //basicPageController.setAddInQueuePersonController(controller);
-
-            dialogStage.showAndWait();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -163,6 +127,10 @@ public class FactoryPage {
             dialogStage.setTitle("Выберите билет");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.setScene(new Scene(pane));
+
+            TicketListController controller = loader.getController();
+            controller.setClientId(basicController.getClientId());
+            controller.setDialogStage(dialogStage);
 
             dialogStage.showAndWait();
 

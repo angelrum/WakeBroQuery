@@ -1,4 +1,4 @@
-package system.controller.page;
+package system.controller.page.ClientTicketPage;
 
 import system.controller.SpringContextUtil;
 import system.controller.page.helper.TicketTableHelper;
@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class ClientTicketControllerInit {
 
-    private ClientTicketListController controller;
+    private ClientTicketController controller;
 
     private CustomerTicketService service = SpringContextUtil.getInstance().getBean(CustomerTicketService.class);
 
-    public ClientTicketControllerInit(ClientTicketListController controller) {
+    public ClientTicketControllerInit(ClientTicketController controller) {
         this.controller = controller;
     }
 
@@ -42,9 +42,10 @@ public class ClientTicketControllerInit {
     private void tableInit() {
         try {
             Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
-            controller.ticketTableView.setItems(TicketTableHelper.getClientTicketRowList(allActiveTicket));
+            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(allActiveTicket));
         } catch (NotFoundException e) {
             //ignore
         }
+        controller.tickets.getSelectionModel().clearSelection(); //снимаем выбор по-умолчанию.
     }
 }

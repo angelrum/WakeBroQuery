@@ -1,29 +1,19 @@
-package system.controller.page;
+package system.controller.page.BasicPage;
 
-import system.controller.Queue;
-import system.controller.SpringContextUtil;
-import system.controller.page.helper.QueueHelper;
 import system.controller.page.listener.ControllerActiveListener;
 import system.controller.page.helper.ButtonSubmitEnum;
 import system.model.Client;
-import system.model.ClientTicket;
-import system.model.Ticket;
-import system.service.CustomerTicketService;
 import system.view.FactoryPage;
 import system.view.PageEnum;
-
-import java.util.Map;
 
 /**
  * Created by vladimir on 01.04.2018.
  */
-public class BasicPageControllerActiveListener implements ControllerActiveListener {
+public class BasicPageControllerActive implements ControllerActiveListener {
 
     private BasicPageController controller;
 
-    private CustomerTicketService service = SpringContextUtil.getInstance().getBean(CustomerTicketService.class);
-
-    public BasicPageControllerActiveListener(BasicPageController controller) {
+    public BasicPageControllerActive(BasicPageController controller) {
         this.controller = controller;
     }
 
@@ -34,6 +24,11 @@ public class BasicPageControllerActiveListener implements ControllerActiveListen
         controller.sname.setVisible(false);
         controller.telNumber.setListener(controller);
         controller.submit.setText("Зарегистрировать", ButtonSubmitEnum.REGISTRATION);
+    }
+
+    public void clear() {
+        refresh();
+        controller.telNumber.clear();
     }
 
     public void clickCancelButton() {
@@ -47,21 +42,12 @@ public class BasicPageControllerActiveListener implements ControllerActiveListen
         switch (controller.submit.getSubmitEnum()) {
             case ADD_IN_QUEUE:
                 FactoryPage.getInstance().showPage(PageEnum.CLIENT_TICKET_LIST);
+                clear();
                 break;
             case REGISTRATION:
+                FactoryPage.getInstance().showPage(PageEnum.REGISTRATION_PERSON_PAGE);
                 break;
         }
-        refresh();
-//        try {
-//            Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
-//            allActiveTicket.forEach((clientTicket, ticket) -> {
-//                Queue.getInstance().insertRows(QueueHelper.transformToQueueRow(clientTicket, ticket));
-//            });
-//        } catch (Exception e) {
-//            //ignore
-//        } finally {
-//            refresh();
-//        }
     }
 
     public void setClient(Client client) {
@@ -79,5 +65,10 @@ public class BasicPageControllerActiveListener implements ControllerActiveListen
     @Override
     public int getClientId() {
         return controller.clientId;
+    }
+
+    @Override
+    public String getInsertNumber() {
+        return controller.telNumber.getText();
     }
 }

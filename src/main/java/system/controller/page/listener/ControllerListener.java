@@ -6,6 +6,7 @@ import system.model.Client;
  * Created by vladimir on 01.04.2018.
  */
 public interface ControllerListener {
+
     void cancelDisable();
 
     void cancelEnable();

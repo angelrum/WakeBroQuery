@@ -1,9 +1,12 @@
-package system.controller.page;
+package system.controller.page.ClientTicketPage;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import system.controller.Queue;
 import system.controller.page.helper.QueueHelper;
 import system.controller.to.QueueRow;
@@ -14,10 +17,10 @@ import system.view.PageEnum;
 /**
  * Created by vladimir on 05.04.2018.
  */
-public class ClientTicketListController {
+public class ClientTicketController {
 
     @FXML
-    protected TableView<ClientTicketRow> ticketTableView;
+    protected TableView<ClientTicketRow> tickets;
 
     @FXML
     protected TableColumn<ClientTicketRow, String> type;
@@ -60,7 +63,7 @@ public class ClientTicketListController {
 
     @FXML
     public void clickOk() {
-        ClientTicketRow row = ticketTableView
+        ClientTicketRow row = tickets
                 .focusModelProperty()
                 .get()
                 .getFocusedItem();
@@ -83,6 +86,16 @@ public class ClientTicketListController {
         dialogStage.toBack();
         FactoryPage.getInstance().showPage(PageEnum.TICKET_LIST);
         dialogStage.toFront();
+        controllerInit.init();
+    }
+
+    /*
+    * Проверяем наличие активных билетов, если их нет,
+    * то переходим сразу же к выбору билета из списка
+    * */
+    public void check() {
+        if (CollectionUtils.isEmpty(tickets.getItems()))
+            clickAddTicket();
     }
 
     public void setDialogStage(Stage dialogStage) {

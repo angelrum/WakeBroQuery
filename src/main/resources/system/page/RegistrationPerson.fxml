@@ -12,7 +12,10 @@
 
 
 <?import system.controller.page.helper.NumberTextField?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.old.controller.RegistrationPersonController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="450.0"
+          xmlns="http://javafx.com/javafx/9"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="system.controller.page.RegistrationPersonPage.RegistrationPersonController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -119,7 +122,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </TextField>
-            <Label fx:id="message" text="Введены не все данные" textFill="#e40a0a" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <Label fx:id="message" textFill="#e40a0a" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
@@ -142,11 +145,11 @@
       </GridPane>
       <ButtonBar prefHeight="43.0" prefWidth="450.0" GridPane.rowIndex="1">
         <buttons>
-            <Button fx:id="ok" mnemonicParsing="false" onAction="#handleOk" text="Сохранить">
+            <Button fx:id="ok" mnemonicParsing="false" onAction="#clickOk" text="Сохранить">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding></Button>
-          <Button fx:id="cancel" mnemonicParsing="false" onAction="#handleCancel" text="Отменить" textAlignment="CENTER">
+          <Button fx:id="cancel" mnemonicParsing="false" onAction="#clickCancel" text="Отменить" textAlignment="CENTER">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding></Button>

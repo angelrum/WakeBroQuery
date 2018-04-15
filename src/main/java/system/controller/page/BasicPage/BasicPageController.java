@@ -1,4 +1,4 @@
-package system.controller.page;
+package system.controller.page.BasicPage;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -57,14 +57,27 @@ public class BasicPageController implements ControllerListener{
     @FXML
     protected TableColumn<QueueRow, String> abnColumn;
 
+    @FXML
+    protected Button play;
+
+    @FXML
+    protected Button stop;
+
+    @FXML
+    protected Text timer;
+
+    @FXML
+    protected Text total;
+
     protected int clientId;
 
     private ControllerActiveListener controllerActive;
     
     @FXML
     public void initialize() {
-        controllerActive = new BasicPageControllerActiveListener(this);
+        controllerActive = new BasicPageControllerActive(this);
         new BasicPageControllerInit(this).init();
+        new StopWatchController(this).init();
     }
 
     @FXML
@@ -81,6 +94,8 @@ public class BasicPageController implements ControllerListener{
         controllerActive.refresh();
     }
 
+    public void clear() {controllerActive.clear();}
+
     public void cancelEnable() {
         cancel.setDisable(false);
     }
@@ -92,6 +107,10 @@ public class BasicPageController implements ControllerListener{
     @Override
     public void setClient(Client client) {
         controllerActive.setClient(client);
+    }
+
+    public int getClientId() {
+        return clientId;
     }
 
     public ControllerActiveListener getControllerActive() {

@@ -1,6 +1,7 @@
 package system.repository.mock;
 
 import org.springframework.stereotype.Repository;
+import system.controller.AuthorizedUser;
 import system.model.Client;
 import system.repository.ClientRepository;
 
@@ -14,13 +15,13 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryClientRepositoryImpl implements ClientRepository {
     private Map<Integer, Client> clients = new HashMap<>();
-    private int id = 0;
+    private int id = 1;
 
     @PostConstruct
     public void init() {
         List<Client> list = Arrays.asList(
-                new Client("Иван", "Иванов", "Иванович", "+7(911)111-11-11", "Анапа"),
-                new Client("Антон", "Иванов", "Иванович", "+7(911)111-11-12", "Новороссийск")
+                new Client("Иван", "Иванов", "Иванович", "+7(911)111-11-11", "Анапа", AuthorizedUser.id()),
+                new Client("Антон", "Иванов", "Иванович", "+7(911)111-11-12", "Новороссийск", AuthorizedUser.id())
         );
 
         list.forEach(this::save);

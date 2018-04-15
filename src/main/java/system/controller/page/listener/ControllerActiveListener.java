@@ -9,6 +9,8 @@ public interface ControllerActiveListener {
 
     void refresh();
 
+    void clear();
+
     void clickCancelButton();
 
     void clickSubmitButton();
@@ -16,4 +18,6 @@ public interface ControllerActiveListener {
     void setClient(Client client);
 
     int getClientId();
+
+    String getInsertNumber();
 }

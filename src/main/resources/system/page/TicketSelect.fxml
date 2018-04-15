@@ -9,7 +9,7 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/9"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="system.controller.page.TicketSelectController"
+            fx:controller="system.controller.page.TicketListPage.TicketListController"
             stylesheets="@style/ClientTicketListPage.css">
    <center>
       <TableView fx:id="tableView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">

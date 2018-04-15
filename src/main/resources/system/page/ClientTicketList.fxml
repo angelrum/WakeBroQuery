@@ -7,9 +7,13 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane minHeight="300.0" minWidth="750.0" prefHeight="400.0" prefWidth="800.0" stylesheets="@style/ClientTicketListPage.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.ClientTicketListController">
+<BorderPane minHeight="300.0" minWidth="750.0" prefHeight="400.0" prefWidth="800.0"
+            stylesheets="@style/ClientTicketListPage.css"
+            xmlns="http://javafx.com/javafx/9"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="system.controller.page.ClientTicketPage.ClientTicketController">
    <center>
-      <TableView fx:id="ticketTableView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="700.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+      <TableView fx:id="tickets" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="700.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="type" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Тип билета" />
           <TableColumn fx:id="equipment" editable="false" prefWidth="143.0" styleClass="column-center" text="Снаряжение" />

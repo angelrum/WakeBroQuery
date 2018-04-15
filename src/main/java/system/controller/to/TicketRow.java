@@ -60,6 +60,9 @@ public class TicketRow {
         return equipment;
     }
 
+    public Ticket getTicket() {
+        return ticket;
+    }
 
     public SimpleIntegerProperty durationProperty() {
         return duration;
