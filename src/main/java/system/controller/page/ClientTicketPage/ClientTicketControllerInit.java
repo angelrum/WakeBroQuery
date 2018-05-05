@@ -4,6 +4,7 @@ import system.controller.SpringContextUtil;
 import system.controller.page.helper.TicketTableHelper;
 import system.model.ClientTicket;
 import system.model.Ticket;
+import system.service.ClientTicketService;
 import system.service.CustomerTicketService;
 import system.service.exception.NotFoundException;
 
@@ -16,7 +17,9 @@ public class ClientTicketControllerInit {
 
     private ClientTicketController controller;
 
-    private CustomerTicketService service = SpringContextUtil.getInstance().getBean(CustomerTicketService.class);
+    //private CustomerTicketService service = SpringContextUtil.getInstance().getBean(CustomerTicketService.class);
+
+    private ClientTicketService service = SpringContextUtil.getInstance().getBean(ClientTicketService.class);
 
     public ClientTicketControllerInit(ClientTicketController controller) {
         this.controller = controller;
@@ -24,6 +27,7 @@ public class ClientTicketControllerInit {
 
     public void init() {
         tableRowInit();
+        tableInit();
     }
 
     private void tableRowInit() {
@@ -36,13 +40,13 @@ public class ClientTicketControllerInit {
         controller.control.setCellValueFactory(cellData -> cellData.getValue().getControl());
         controller.count.setCellValueFactory(cellData -> cellData.getValue().getCount());
         controller.duration.setCellValueFactory(cellData -> cellData.getValue().durationProperty());
-        tableInit();
     }
 
     private void tableInit() {
         try {
-            Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
-            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(allActiveTicket));
+//            Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
+//            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(allActiveTicket));
+            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(service.getAllActiveTicket(controller.clientId)));
         } catch (NotFoundException e) {
             //ignore
         }

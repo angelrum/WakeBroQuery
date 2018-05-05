@@ -6,6 +6,8 @@ package system.controller.page.BasicPage;
  * Класс описывает работу секундомера и подсчет суммарного времени очереди
  */
 
+import system.controller.Queue;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -69,7 +71,7 @@ public class StopWatchController implements Closeable {
         controller.play
                 .getStyleClass()
                 .add("play-active");
-        //сообщить очереди, что необходимо списать билет
+        Queue.getInstance().reedeemTicket();//сообщить очереди, что необходимо списать билет
     }
 
     private void insertTime(long time) {

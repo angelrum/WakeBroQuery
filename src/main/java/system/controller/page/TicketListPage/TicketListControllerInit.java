@@ -41,7 +41,7 @@ public class TicketListControllerInit {
             controller.tableView.setItems(rows);
             controller.tableView.getSelectionModel().clearSelection();
         } catch (NotFoundException | NullPointerException e) {
-            //controller.tableView.setItems(FXCollections.emptyObservableList());
+            e.printStackTrace();
         }
     }
 }

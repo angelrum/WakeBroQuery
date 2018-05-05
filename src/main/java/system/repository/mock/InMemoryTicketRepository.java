@@ -27,14 +27,14 @@ public class InMemoryTicketRepository implements TicketRepository {
     @PostConstruct
     public void init() {
         List<Ticket> list = Arrays.asList(
-                new Ticket(1, Pass.ABN_PASS, "Абонемент(Утренний)", true, LocalTime.of(9, 0), LocalTime.of(12, 0), LocalDate.now().getYear(), 1, 100, 200),
-                new Ticket(1,"Сет(Утренний)", true, LocalTime.of(9, 0), LocalTime.of(12, 0), LocalDate.now().getYear(),100, 200)
+                //new Ticket(1, Pass.ABN_PASS, "Абонемент(Утренний)", true, LocalTime.of(9, 0), LocalTime.of(12, 0), LocalDate.now().getYear(), 1, 100, 200),
+                //new Ticket(1,"Сет(Утренний)", true, LocalTime.of(9, 0), LocalTime.of(12, 0), LocalDate.now().getYear(),100, 200)
         );
-        list.forEach(this::save);
+        //list.forEach(this::save);
     }
 
     @Override
-    public Ticket save(Ticket ticket) {
+    public Ticket save(Ticket ticket, int userId) {
         if (ticket.isNew()){
             ticket.setId(id++);
             tickets.put(ticket.getId(), ticket);
@@ -57,5 +57,10 @@ public class InMemoryTicketRepository implements TicketRepository {
 
     public Ticket get(int id) {
         return tickets.get(id);
+    }
+
+    @Override
+    public List<Ticket> getAllActive() {
+        return null;
     }
 }

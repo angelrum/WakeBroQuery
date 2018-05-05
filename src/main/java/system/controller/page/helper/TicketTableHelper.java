@@ -20,11 +20,21 @@ public class TicketTableHelper {
     public static ObservableList<ClientTicketRow> getClientTicketRowList(Map<ClientTicket, Ticket> map) {
         Map<Integer, ClientTicketRow> tmpMap = new HashMap<>();
         for (Map.Entry<ClientTicket, Ticket> entry : map.entrySet()) {
-            ClientTicketRow row = tmpMap.computeIfAbsent(entry.getValue().getId(), integer -> new ClientTicketRow(entry.getValue(), entry.getKey()));
+            ClientTicketRow row = tmpMap.computeIfAbsent(entry.getValue().getId(), integer -> new ClientTicketRow(entry.getKey()));
             row.setMaxCount(row.getCount().intValue() + 1);
         }
         return FXCollections.observableArrayList(tmpMap.values());
     }
+
+    public static ObservableList<ClientTicketRow> getClientTicketRowList(List<ClientTicket> list) {
+        Map<Integer, ClientTicketRow> tmpMap = new HashMap<>();
+        for (ClientTicket clientTicket : list) {
+            ClientTicketRow row = tmpMap.computeIfAbsent(clientTicket.getTicket().getId(), integer -> new ClientTicketRow(clientTicket));
+            row.setMaxCount(row.getCount().intValue() + 1);
+        }
+        return FXCollections.observableArrayList(tmpMap.values());
+    }
+
 
     public static ObservableList<TicketRow> getTicketRowList(List<Ticket> list) {
         List<TicketRow> rowList = new ArrayList<>();

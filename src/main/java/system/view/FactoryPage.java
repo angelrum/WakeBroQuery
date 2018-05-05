@@ -3,6 +3,9 @@ package system.view;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
@@ -26,6 +29,7 @@ public class FactoryPage {
     private final URL registrationPage = MainApp.class.getResource("page/RegistrationPerson.fxml");
     private final URL clientTicketList = MainApp.class.getResource("page/ClientTicketList.fxml");
     private final URL ticketList = MainApp.class.getResource("page/TicketSelect.fxml");
+    private final URL ticketEdit = MainApp.class.getResource("page/TicketEditPage.fxml");
 
 
     private ControllerActiveListener basicController;
@@ -59,6 +63,9 @@ public class FactoryPage {
             case TICKET_LIST:
                 showTicketList();
                 break;
+            case TICKET_EDIT:
+                showTicketEditPage();
+                break;
         }
     }
 
@@ -66,7 +73,10 @@ public class FactoryPage {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(startPage);
-            Scene scene = new Scene(loader.load());
+            BorderPane pane = loader.load();
+            pane.setTop(getMenuBar());
+
+            Scene scene = new Scene(pane);
             basicController = ((BasicPageController)loader.getController()).getControllerActive();
             //basicPageController.setModel(this.model);
             basicStage.setTitle("Программа WakeBro Queue");
@@ -145,5 +155,34 @@ public class FactoryPage {
         alert.setTitle("Ошибка!");
         alert.setContentText(text);
         alert.showAndWait();
+    }
+
+    private MenuBar getMenuBar() {
+        MenuBar menuBar = new MenuBar();
+        Menu control = new Menu("Управление");
+        MenuItem controlItem = new MenuItem("Билеты");
+        controlItem.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.TICKET_EDIT));
+        control.getItems().addAll(controlItem);
+        menuBar.getMenus().addAll(control);
+
+        final String os = System.getProperty ("os.name");
+        if (os != null && os.startsWith ("Mac"))
+            menuBar.useSystemMenuBarProperty ().set (true);
+        return menuBar;
+    }
+
+    private void showTicketEditPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(ticketEdit);
+            BorderPane pane = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Управление билетами");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setScene(new Scene(pane));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -64,7 +64,7 @@ public class TicketListController {
             if (Objects.isNull(row))
                 FactoryPage.getInstance().showAlert("Выберите билет!", dialogStage);
             else {
-                service.save(AuthorizedUser.id(), clientId, row.getTicket().getId());
+                service.save(clientId, row.getTicket());
                 close();
             }
         }

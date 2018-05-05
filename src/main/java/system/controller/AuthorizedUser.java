@@ -5,7 +5,7 @@ package system.controller;
  */
 public class AuthorizedUser {
 
-    private static int id = 0;
+    private static int id = 100000;
 
     public static void setId(int id) {
         AuthorizedUser.id = id;

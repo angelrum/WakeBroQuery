@@ -16,5 +16,5 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    User getByLogin(String login) throws NoSuchElementException;
+    User getByLogin(String login);
 }

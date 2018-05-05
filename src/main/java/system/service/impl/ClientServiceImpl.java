@@ -2,6 +2,7 @@ package system.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import system.controller.AuthorizedUser;
 import system.model.Client;
 import system.repository.ClientRepository;
 import system.service.ClientService;
@@ -27,7 +28,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client save(Client client) {
         checkNotNull(client);
-        return repository.save(client);
+        return repository.save(client, AuthorizedUser.id());
     }
 
     @Override

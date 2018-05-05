@@ -20,15 +20,15 @@ public class InMemoryClientRepositoryImpl implements ClientRepository {
     @PostConstruct
     public void init() {
         List<Client> list = Arrays.asList(
-                new Client("Иван", "Иванов", "Иванович", "+7(911)111-11-11", "Анапа", AuthorizedUser.id()),
-                new Client("Антон", "Иванов", "Иванович", "+7(911)111-11-12", "Новороссийск", AuthorizedUser.id())
+                //new Client("Иван", "Иванов", "Иванович", "+7(911)111-11-11", "Анапа", AuthorizedUser.id()),
+                //new Client("Антон", "Иванов", "Иванович", "+7(911)111-11-12", "Новороссийск", AuthorizedUser.id())
         );
 
-        list.forEach(this::save);
+        //list.forEach(this::save);
     }
 
     @Override
-    public Client save(Client client) {
+    public Client save(Client client, int userId) {
         if (client.isNew())
             client.setId(id++);
         clients.put(client.getId(), client);

@@ -8,7 +8,7 @@ import system.model.Client;
  */
 public class ClientUtil {
     public static Client createClient(String telnumber, String fname, String lname, String sname, String city) {
-        Client client = new Client(fname, lname, sname, telnumber, city, AuthorizedUser.id());
+        Client client = new Client(fname, lname, sname, telnumber, city, null);
         return client;
     }
 }

@@ -27,20 +27,20 @@ public class InMemoryClientTicketRepository implements ClientTicketRepository {
     @PostConstruct
     public void init() {
         List<ClientTicket> list = Arrays.asList(
-                new ClientTicket(0, 1, 1),
-                new ClientTicket(0, 1, 1),
-                new ClientTicket(0, 1, 1),
-                new ClientTicket(0, 1, 0),
-                new ClientTicket(0, 1, 2, LocalDate.of(2017, 12, 3), LocalDate.of(2017, 12, 15))
+                //new ClientTicket(0, 1, 1),
+                //new ClientTicket(0, 1, 1),
+                //new ClientTicket(0, 1, 1),
+                //new ClientTicket(0, 1, 0),
+                //new ClientTicket(0, 1, 2, LocalDate.of(2017, 12, 3), LocalDate.of(2017, 12, 15))
         );
-        list.forEach(this::save);
+        //list.forEach(this::save);
     }
 
     @Override
-    public ClientTicket save(ClientTicket clientTicket) {
+    public ClientTicket save(ClientTicket clientTicket, int clientId, int userId) {
         if (clientTicket.isNew())
             clientTicket.setId(id++);
-        Map<Integer, ClientTicket> map = tickets.computeIfAbsent(clientTicket.getClientId(), HashMap::new);
+        Map<Integer, ClientTicket> map = tickets.computeIfAbsent(clientTicket.getClient().getId(), HashMap::new);
         map.put(clientTicket.getId(), clientTicket);
         return clientTicket;
     }
@@ -64,6 +64,16 @@ public class InMemoryClientTicketRepository implements ClientTicketRepository {
                     .values()
                     .stream()
                     .collect(Collectors.toList());
+        return null;
+    }
+
+    @Override
+    public ClientTicket update(ClientTicket clientTicket) {
+        return null;
+    }
+
+    @Override
+    public List<ClientTicket> getActive(int clientId, LocalDate date) {
         return null;
     }
 }

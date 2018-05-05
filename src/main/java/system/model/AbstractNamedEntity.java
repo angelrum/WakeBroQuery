@@ -1,5 +1,8 @@
 package system.model;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -7,12 +10,19 @@ import java.time.LocalDateTime;
  * Идентификато, дата создания и данные пользователя/клиента
  *
  */
+@MappedSuperclass
 public abstract class AbstractNamedEntity extends AbstractDateEntity {
 
+    @Column(name = "firstname")
+    @NotBlank
     private String firstname;
 
+    @Column(name = "lastname")
+    @NotBlank
     private String lastname;
 
+    @Column(name = "secondname")
+    @NotBlank
     private String secondname;
 
     public AbstractNamedEntity(String firstname, String lastname, String secondname) {
@@ -26,6 +36,9 @@ public abstract class AbstractNamedEntity extends AbstractDateEntity {
         this.secondname = secondname;
     }
 
+    public AbstractNamedEntity() {
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -36,5 +49,17 @@ public abstract class AbstractNamedEntity extends AbstractDateEntity {
 
     public String getSecondname() {
         return secondname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setSecondname(String secondname) {
+        this.secondname = secondname;
     }
 }

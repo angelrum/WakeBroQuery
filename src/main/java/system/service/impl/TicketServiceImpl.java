@@ -2,12 +2,12 @@ package system.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import system.controller.AuthorizedUser;
 import system.model.Ticket;
 import system.repository.TicketRepository;
 import system.service.TicketService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static system.util.ValidationUtil.*;
 
@@ -27,7 +27,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket save(Ticket ticket) throws NullPointerException {
         checkNotNull(ticket);
-        return checkNotNull(repository.save(ticket));
+        return checkNotNull(repository.save(ticket, AuthorizedUser.id()));
     }
 
     @Override
@@ -41,10 +41,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     public List<Ticket> getAllActive() {
-        List<Ticket> list = checkNullOrEmptyList(repository.getAll());
-        return list.stream()
-                .filter(ticket -> ticket.isEnable())
-                .collect(Collectors.toList());
+//        List<Ticket> list = checkNullOrEmptyList(repository.getAll());
+//        return list.stream()
+//                .filter(ticket -> ticket.isEnable())
+//                .collect(Collectors.toList());
+        return checkNullOrEmptyList(repository.getAllActive());
     }
 
     public Ticket get(int ticketId) {

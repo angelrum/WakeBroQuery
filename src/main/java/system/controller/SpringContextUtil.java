@@ -12,7 +12,7 @@ public class SpringContextUtil {
     private static SpringContextUtil instance;
 
     private SpringContextUtil() {
-        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
     }
 
     public static SpringContextUtil getInstance() {

@@ -18,7 +18,10 @@ import static system.util.ValidationUtil.*;
 
 /**
  * Created by vladimir on 01.04.2018.
+ * Сервис для совместной выгрузки данных по клиентам и их билетам, и работе с ними.
+ * Необходим на стадии рабоыт без БД
  */
+@Deprecated
 @Service
 public class CustomerTicketServiceImpl implements CustomerTicketService {
 
@@ -51,7 +54,7 @@ public class CustomerTicketServiceImpl implements CustomerTicketService {
 
     private Map<ClientTicket, Ticket> getTicketList(List<ClientTicket> clientTickets) {
         Map<ClientTicket, Ticket> map = new HashMap<>();
-        clientTickets.forEach(clientTicket -> map.put(clientTicket, getTicket(clientTicket.getTicketId())));
+        clientTickets.forEach(clientTicket -> map.put(clientTicket, getTicket(clientTicket.getTicket().getId())));
         return map;
     }
 }

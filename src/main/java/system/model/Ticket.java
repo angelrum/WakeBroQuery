@@ -1,5 +1,8 @@
 package system.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static system.util.TicketUtil.*;
@@ -9,63 +12,107 @@ import static system.util.TicketUtil.*;
  * @param:
  *      @pass                тип пропуска сет/абонемент
  *      @equipment           включено ли снаряжение
- *      @start/end           относиться к интервалу действия абонемента, например утренний с 9-12
+ *      @datestart/dateend   относиться к интервалу действия абонемента, как временной период (например летний сезон с 05.2018 до 09.2018)
+ *      @month               задаем длительность абонемента в месяцах
+ *      @timestart/@timeend  относиться к временному интервалу действия билета, например утренний, с 09:00 до 12:00
  *      @duration            длительность сета, по умолчанию 5 минут
  *      @year                год действия абонемента или сета
  *      @cost/weekendcost    стоимость/стоимость в выходные(для сетов)
- *      @month               длительность абонемента в днях/месяцах
- * from AbstractDateIdEntity
- *      @createid            идентификатор создателя записи
+ *      @userId              идентификатор создателя записи
+ * from AbstractDateEntity
  *      @create              дата добавления записи
  *      @id                  ид. записи
  *
  * Логика:
  * 1. Есть три поля, описывающие длительность действия билета: @start, @end и @month.
- *    1.1 Если все поля равны null, значит абонемент длительностью в один день;
- *    1.2 Если заполнены поля @start и @end значит билет действует ограниченный период дат;
- *    1.3 Если поля @start и @end пусты, но заполнено поле @month значит билет действует указанное кол-во месяцев
+ *    1.1 Если все поля равны @datestart/@dateend = @month == null, значит абонемент длительностью в один день;
+ *    1.2 Если заполнены поля @datestart и @dateend значит билет действует ограниченный период дат;
+ *    1.3 Если поля @datestart/dateend пусты, но заполнено поле @month значит билет действует указанное кол-во месяцев
  *                                                                                           с момента добавления
  */
-public class Ticket extends AbstractDateIdEntity {
+@Entity
+@Table(name = "ticket",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"pass", "name", "year"}, name = "ticket_unique_index"))
+@NamedQueries({
+        @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
+        @NamedQuery(name = Ticket.GET_ALL, query = "SELECT t FROM Ticket t ORDER BY t.pass, t.name, t.equipment"),
+        @NamedQuery(name = Ticket.GET_ALL_ACTIVE, query = "SELECT t FROM Ticket t WHERE t.enable = true ORDER BY t.pass, t.name, t.equipment")
+})
+public class Ticket extends AbstractDateEntity {
+    public static final String DELETE = "Ticket.delete";
+    public static final String GET_ALL = "Ticket.get_all";
+    public static final String GET_ALL_ACTIVE = "Ticket.get_all_active";
 
+    @Column(name = "pass")
+    @Enumerated(EnumType.STRING)
+    @NotBlank
     private Pass pass;
 
+    @Column(name = "name")
+    @NotBlank
     private String name;
 
+    @Column(name = "enable")
+    @NotNull
     private boolean enable = true;
 
-    private boolean equipment;
+    @Column(name = "equipment")
+    @NotNull
+    private boolean equipment = false;
 
+    @Column
+    @Positive
     private Integer duration;
 
-    private LocalTime start;
+    @Column(name = "start_time")
+    private LocalTime startTime = LocalTime.of(0, 0);
 
-    private LocalTime end;
+    @Column(name = "end_time")
+    private LocalTime endTime = LocalTime.of(23, 59);
 
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @Column(name = "year")
+    @Min(2018)
+    @Max(2099)
     private Integer year;
 
+    @Column(name = "month")
     private Integer month;
 
-    private Integer cost;
+    @Column(name = "cost")
+    @Min(0)
+    private Double cost;
 
-    private Integer weekendcost;
+    @Column(name = "weekendcost")
+    @Min(0)
+    private Double weekendcost;
 
-    public Ticket(Integer createId, Pass pass, String name, boolean equipment, LocalTime start, LocalTime end, Integer year, Integer month, Integer cost, Integer weekendcost) {
-        super(createId);
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
+    public Ticket(Pass pass, String name, boolean equipment, LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Integer year, Integer month, Double cost, Double weekendcost, User user) {
         this.pass = pass;
         this.name = name;
         this.equipment = equipment;
         this.duration = TICKET_DURATION;
-        this.start = start;
-        this.end = end;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.year = year;
         this.month = month;
         this.cost = cost;
         this.weekendcost = weekendcost;
+        this.user = user;
     }
 
-    public Ticket(Integer createId, String name, boolean equipment, LocalTime start, LocalTime end, Integer year, Integer cost, Integer weekendcost) {
-        this(createId, Pass.SECOND_PASS, name, equipment, start, end, year, null, cost, weekendcost);
+    public Ticket() {
     }
 
     public Pass getPass() {
@@ -108,28 +155,44 @@ public class Ticket extends AbstractDateIdEntity {
         this.duration = duration;
     }
 
-    public LocalTime getStart() {
-        return start;
-    }
-
-    public void setStart(LocalTime start) {
-        this.start = start;
-    }
-
-    public LocalTime getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalTime end) {
-        this.end = end;
-    }
-
     public Integer getYear() {
         return year;
     }
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public Integer getMonth() {
@@ -140,52 +203,27 @@ public class Ticket extends AbstractDateIdEntity {
         this.month = month;
     }
 
-    public Integer getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(Integer cost) {
-        this.cost = cost;
-    }
-
-    public Integer getWeekendcost() {
+    public Double getWeekendcost() {
         return weekendcost;
     }
 
-    public void setWeekendcost(Integer weekendcost) {
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+
+    public void setWeekendcost(Double weekendcost) {
         this.weekendcost = weekendcost;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        Ticket ticket = (Ticket) o;
-
-        if (enable != ticket.enable) return false;
-        if (equipment != ticket.equipment) return false;
-        if (pass != ticket.pass) return false;
-        if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
-        if (duration != null ? !duration.equals(ticket.duration) : ticket.duration != null) return false;
-        if (start != null ? !start.equals(ticket.start) : ticket.start != null) return false;
-        if (end != null ? !end.equals(ticket.end) : ticket.end != null) return false;
-        if (year != null ? !year.equals(ticket.year) : ticket.year != null) return false;
-        if (month != null ? !month.equals(ticket.month) : ticket.month != null) return false;
-        if (cost != null ? !cost.equals(ticket.cost) : ticket.cost != null) return false;
-        return weekendcost != null ? weekendcost.equals(ticket.weekendcost) : ticket.weekendcost == null;
+    public User getUser() {
+        return user;
     }
 
-    @Override
-    public int hashCode() {
-        int result = pass != null ? pass.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (enable ? 1 : 0);
-        result = 31 * result + (equipment ? 1 : 0);
-        result = 31 * result + (duration != null ? duration.hashCode() : 0);
-        result = 31 * result + (start != null ? start.hashCode() : 0);
-        result = 31 * result + (end != null ? end.hashCode() : 0);
-        result = 31 * result + (year != null ? year.hashCode() : 0);
-        result = 31 * result + (month != null ? month.hashCode() : 0);
-        result = 31 * result + (cost != null ? cost.hashCode() : 0);
-        result = 31 * result + (weekendcost != null ? weekendcost.hashCode() : 0);
-        return result;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

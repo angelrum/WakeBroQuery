@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ClientRepository {
 
-    Client save(Client client);
+    Client save(Client client, int userId);
 
     boolean delete(int id);
 

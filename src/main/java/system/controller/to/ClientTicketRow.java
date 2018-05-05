@@ -43,9 +43,9 @@ public class ClientTicketRow {
 
     private ClientTicket clientTicket;
 
-    public ClientTicketRow(Ticket ticket, ClientTicket clientTicket) {
-        this.ticket = ticket;
+    public ClientTicketRow(ClientTicket clientTicket) {
         this.clientTicket = clientTicket;
+        this.ticket = clientTicket.getTicket();
         init();
     }
 
@@ -55,8 +55,8 @@ public class ClientTicketRow {
         equipment.setSelected(ticket.isEquipment());
         equipment.setDisable(true);
         equipment.getStyleClass().add("column");
-        start.setValue(ticket.getStart().toString());
-        end.setValue(ticket.getEnd().toString());
+        start.setValue(null);
+        end.setValue(null);
         dateEnd.setValue(clientTicket.getEnd()!=null?clientTicket.getEnd().toString():null);
         duration.setValue(String.valueOf(ticket.getDuration()));
 

@@ -1,12 +1,10 @@
 package system.controller.page.ClientTicketPage;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import system.controller.Queue;
 import system.controller.page.helper.QueueHelper;
 import system.controller.to.QueueRow;

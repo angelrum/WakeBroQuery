@@ -9,5 +9,6 @@ public enum PageEnum {
     ADD_IN_QUEUE,
     LOGIN_PAGE,
     CLIENT_TICKET_LIST,
-    TICKET_LIST;
+    TICKET_LIST,
+    TICKET_EDIT;
 }

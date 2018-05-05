@@ -9,11 +9,13 @@ import java.util.List;
  */
 public interface TicketRepository {
 
-    Ticket save(Ticket ticket);
+    Ticket save(Ticket ticket, int userId);
 
     boolean delete(int id);
 
     List<Ticket> getAll();
+
+    List<Ticket> getAllActive();
 
     Ticket get(int id);
 }

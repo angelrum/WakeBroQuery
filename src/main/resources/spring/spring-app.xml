@@ -6,6 +6,6 @@
 
     <context:component-scan base-package="system.**.service"/>
 
-    <context:component-scan base-package="system.**.repository"/>
+    <!--<context:component-scan base-package="system.**.repository"/>-->
 
 </beans>

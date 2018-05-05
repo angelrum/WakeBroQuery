@@ -42,8 +42,8 @@ public class TicketRow {
         checkBox.setDisable(true);
         equipment.setValue(checkBox);
         duration.setValue(ticket.getDuration());
-        start.setValue(ticket.getStart().toString());
-        end.setValue(ticket.getEnd().toString());
+        start.setValue(ticket.getStartTime()==null ? null : ticket.getStartTime().toString());
+        end.setValue(ticket.getEndTime()==null ? null : ticket.getEndTime().toString());
         month.setValue(ticket.getMonth()==null ? null : ticket.getMonth().toString());
     }
 
@@ -68,11 +68,9 @@ public class TicketRow {
         return duration;
     }
 
-
     public SimpleStringProperty startProperty() {
         return start;
     }
-
 
     public SimpleStringProperty endProperty() {
         return end;

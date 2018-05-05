@@ -2,10 +2,12 @@ package system.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.util.CollectionUtils;
 import system.controller.to.QueueRow;
 
 import java.util.*;
 import static system.util.ValidationUtil.*;
+import static system.controller.page.helper.QueueHelper.*;
 
 /**
  * Created by vladimir on 01.04.2018.
@@ -44,6 +46,19 @@ public class Queue implements QueueListener {
         rowEnable(true);
         queueRows.addAll(activeQueue);
         queueRows.addAll(disactiveQueue);
+    }
+
+    /**
+    * Списываем первый билет из очереди
+    * Если в это абонемент или сет с доступным кол-вом, то списываем и переносим в конец очерели
+    * Иначе списываем и удаляем из очереди
+     */
+    public void reedeemTicket() {
+        if (checkNotEmptyActiveQueue()) {
+            QueueRow first = activeQueue.getFirst();
+
+
+        }
     }
 
     public void toUp(QueueRow row) {
@@ -97,5 +112,9 @@ public class Queue implements QueueListener {
             first.setDisabledUp(flag);
             last.setDisabledDown(flag);
         }
+    }
+
+    public LinkedList<QueueRow> getActiveQueue() {
+        return activeQueue;
     }
 }
