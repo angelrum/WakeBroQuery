@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -19,7 +18,9 @@
 
 <?import system.controller.page.helper.ButtonSubmit?>
 <?import system.controller.page.helper.NumberTextField?>
-<BorderPane centerShape="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" stylesheets="@style/BasicPage.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.BasicPage.BasicPageController">
+<?import java.net.URL?>
+<?scenebuilder-stylesheet style/BasicPage.css?>
+<BorderPane centerShape="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.BasicPage.BasicPageController">
    <left>
       <FlowPane maxWidth="400.0" minWidth="-Infinity" prefWidth="350.0" BorderPane.alignment="TOP_CENTER">
          <BorderPane.margin>
@@ -167,4 +168,8 @@
          </children>
       </VBox>
    </center>
+   <!--https://stackoverflow.com/questions/14696884/setting-stylesheets-declaratively-in-fxml-->
+   <stylesheets>
+      <URL value="@style/BasicPage.css"/>
+   </stylesheets>
 </BorderPane>

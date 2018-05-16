@@ -8,7 +8,7 @@ import java.util.List;
  * Created by vladimir on 20.03.2018.
  */
 public interface TicketService {
-    Ticket save(Ticket ticket);
+    Ticket save(Ticket ticket) throws IllegalArgumentException;
 
     void delete(int id);
 

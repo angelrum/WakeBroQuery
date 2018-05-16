@@ -14,7 +14,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = Client.DELETE, query = "DELETE FROM Client c WHERE c.id=:id"),
         @NamedQuery(name = Client.GET_ALL, query = "SELECT c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets ORDER BY c.create"),
-        @NamedQuery(name = Client.GET_BY_NUMBER, query = "SELECT c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets WHERE c.telnumber=:telnumber")
+        @NamedQuery(name = Client.GET_BY_NUMBER, query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets WHERE c.telnumber=:telnumber")
 })
 
 @Entity

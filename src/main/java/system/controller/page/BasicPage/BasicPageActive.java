@@ -1,6 +1,6 @@
 package system.controller.page.BasicPage;
 
-import system.controller.page.listener.ControllerActiveListener;
+import system.controller.page.listener.ActiveListener;
 import system.controller.page.helper.ButtonSubmitEnum;
 import system.model.Client;
 import system.view.FactoryPage;
@@ -9,16 +9,16 @@ import system.view.PageEnum;
 /**
  * Created by vladimir on 01.04.2018.
  */
-public class BasicPageControllerActive implements ControllerActiveListener {
+public class BasicPageActive implements ActiveListener {
 
     private BasicPageController controller;
 
-    public BasicPageControllerActive(BasicPageController controller) {
+    public BasicPageActive(BasicPageController controller) {
         this.controller = controller;
     }
 
     public void refresh() {
-        controller.clientId = 0;
+        controller.client = null;
         controller.fname.setVisible(false);
         controller.lname.setVisible(false);
         controller.sname.setVisible(false);
@@ -51,7 +51,8 @@ public class BasicPageControllerActive implements ControllerActiveListener {
     }
 
     public void setClient(Client client) {
-        controller.clientId = client.getId();
+        controller.client = client;
+        controller.telNumber.setText(client.getTelnumber());
         controller.fname.setText(client.getFirstname());
         controller.lname.setText(client.getLastname());
         controller.sname.setText(client.getSecondname());
@@ -63,8 +64,8 @@ public class BasicPageControllerActive implements ControllerActiveListener {
     }
 
     @Override
-    public int getClientId() {
-        return controller.clientId;
+    public Client getClient() {
+        return controller.client;
     }
 
     @Override

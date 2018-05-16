@@ -25,7 +25,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket save(Ticket ticket) throws NullPointerException {
+    public Ticket save(Ticket ticket) throws IllegalArgumentException {
         checkNotNull(ticket);
         return checkNotNull(repository.save(ticket, AuthorizedUser.id()));
     }

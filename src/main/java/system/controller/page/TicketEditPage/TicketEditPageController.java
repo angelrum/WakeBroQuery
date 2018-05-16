@@ -1,9 +1,18 @@
 package system.controller.page.TicketEditPage;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import system.controller.page.listener.ActiveListener;
+import system.controller.page.listener.Command;
+import system.controller.page.listener.Controller;
+import system.model.Client;
 import system.model.Pass;
 import system.model.Ticket;
 
@@ -13,7 +22,7 @@ import java.time.LocalTime;
 /**
  * Created by vladimir on 02.05.2018.
  */
-public class TicketEditPageController {
+public class TicketEditPageController implements Controller {
 
     @FXML protected TableView<Ticket> ticketView;
 
@@ -43,9 +52,50 @@ public class TicketEditPageController {
 
     @FXML protected TableColumn<Ticket, Double> weekcostColumn;
 
+    @FXML protected TableColumn<Ticket, StackPane> delete;
+
+    private TicketEditPageControllerInit controller;
+
+    protected Stage stage;
+
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     @FXML
     public void initialize() {
-        System.out.println("TicketEditPageController init");
-        new TicketEditPageControllerInit(this).init();
+        controller = new TicketEditPageControllerInit(this);
+        controller.init();
+    }
+
+    @FXML
+    public void clickOk() {
+        controller.save();
+    }
+
+    @FXML
+    public void clickCancel() {
+        controller.cancel();
+    }
+
+    @FXML
+    public void clickCreate() {
+        controller.create();
+    }
+
+    @Override
+    public void setListener(ActiveListener listener) {
+
+    }
+
+    @Override
+    public void setActiveClient(Client client) {
+
+    }
+
+    @Override
+    public void execute(Command command) {
+
     }
 }

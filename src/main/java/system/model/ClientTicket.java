@@ -27,7 +27,7 @@ import java.time.LocalDate;
         @NamedQuery(name = ClientTicket.DELETE,     query = "DELETE FROM ClientTicket ct WHERE ct.id=:id AND ct.client.id=:clientId"),
         @NamedQuery(name = ClientTicket.GET_ALL,    query = "SELECT ct FROM ClientTicket ct WHERE ct.client.id=:clientId order by ct.start, ct.active"),
         @NamedQuery(name = ClientTicket.GET_ACTIVE, query = "SELECT ct FROM ClientTicket ct WHERE ct.client.id=:clientId " +
-                                                            "AND ct.active=true AND ct.start >=:date AND ct.end<=:date order by ct.start")
+                                                            "AND ct.active=true AND ct.start<=:date AND ct.end>=:date order by ct.start")
 })
 @Entity
 @Table(name = "client_ticket")

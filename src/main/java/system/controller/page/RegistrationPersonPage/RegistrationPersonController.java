@@ -1,12 +1,15 @@
 package system.controller.page.RegistrationPersonPage;
 
+import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import system.controller.page.helper.NumberTextField;
-import system.controller.page.listener.ControllerActiveListener;
+import system.controller.page.listener.ActiveListener;
+import system.controller.page.listener.Command;
+import system.controller.page.listener.Controller;
 import system.model.Client;
 
 import java.util.Objects;
@@ -14,22 +17,22 @@ import java.util.Objects;
 /**
  * Created by vladimir on 14.04.2018.
  */
-public class RegistrationPersonController {
+public class RegistrationPersonController implements Controller {
 
     @FXML
     protected NumberTextField telNumber;
 
     @FXML
-    protected TextField fname;
+    protected JFXTextField fname;
 
     @FXML
-    protected TextField sname;
+    protected JFXTextField sname;
 
     @FXML
-    protected TextField lname;
+    protected JFXTextField lname;
 
     @FXML
-    protected TextField city;
+    protected JFXTextField city;
 
     @FXML
     protected Button ok;
@@ -37,35 +40,13 @@ public class RegistrationPersonController {
     @FXML
     protected Button cancel;
 
-    @FXML
-    protected Label message;
-
-    @FXML
-    protected Label lFname;
-
-    @FXML
-    protected Label lSname;
-
-    @FXML
-    protected Label lLname;
-
-    @FXML
-    protected Label lTelNumber;
-
-    @FXML
-    protected Label lCity;
-
     protected Stage dialogStage;
 
     private RegistrationPersonControllerInit controllerInit;
 
-    private ControllerActiveListener listener; //ссылка на BasicPageControllerActive
+    private ActiveListener listener; //ссылка на BasicPageActive
 
-    public ControllerActiveListener getListener() {
-        return listener;
-    }
-
-    public void setListener(ControllerActiveListener listener) {
+    public void setListener(ActiveListener listener) {
         this.listener = listener;
         this.telNumber.setText(listener.getInsertNumber());
     }
@@ -86,11 +67,22 @@ public class RegistrationPersonController {
         controllerInit.close();
     }
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
     protected void insertClientInBasicPage(Client client) {
         if (!Objects.isNull(listener)) listener.setClient(client);
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.dialogStage = stage;
+    }
+
+    @Override
+    public void setActiveClient(Client client) {
+
+    }
+
+    @Override
+    public void execute(Command command) {
+
     }
 }

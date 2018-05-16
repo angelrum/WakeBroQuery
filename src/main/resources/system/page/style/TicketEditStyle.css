@@ -1,0 +1,24 @@
+.root {
+    -fx-font-family: 'Helvetica Neue';
+    -fx-font-style: normal;
+    -fx-font-size: 14px;
+    -fx-font-weight: lighter;
+}
+
+.table-column > .label {
+    -fx-alignment: baseline-center;
+}
+
+.table-column > .label > .text {
+    -fx-font-family: 'Helvetica Neue';
+    -fx-text-alignment: center;
+    -fx-font-size: 14px;
+}
+
+.column.table-cell {
+    -fx-alignment: baseline-center;
+}
+
+.icon {
+    -fx-font-family: FontAwesome;-fx-fill:#e25050; -fx-font-size:1.5em;
+}

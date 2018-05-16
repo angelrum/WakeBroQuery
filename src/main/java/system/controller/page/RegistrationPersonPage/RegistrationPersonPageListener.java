@@ -1,12 +1,15 @@
 package system.controller.page.RegistrationPersonPage;
 
-import system.controller.page.listener.ControllerListener;
+import javafx.stage.Stage;
+import system.controller.page.listener.ActiveListener;
+import system.controller.page.listener.Command;
+import system.controller.page.listener.Controller;
 import system.model.Client;
 
 /**
  * Created by vladimir on 14.04.2018.
  */
-public class RegistrationPersonPageListener implements ControllerListener {
+public class RegistrationPersonPageListener implements Controller {
 
     private RegistrationPersonControllerInit controller;
 
@@ -15,23 +18,23 @@ public class RegistrationPersonPageListener implements ControllerListener {
     }
 
     @Override
-    public void cancelDisable() {
+    public void setStage(Stage stage) {
 
     }
 
     @Override
-    public void cancelEnable() {
+    public void setListener(ActiveListener listener) {
 
     }
 
     @Override
-    public void setClient(Client client) {
-        controller.setMessage("Клиент уже заведен в системе");
+    public void setActiveClient(Client client) {
+        controller.validateTelNumber();
         controller.disabledButton();
     }
 
     @Override
-    public void refresh() {
+    public void execute(Command command) {
         controller.clear();
     }
 }

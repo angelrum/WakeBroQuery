@@ -7,15 +7,19 @@ import javafx.stage.Stage;
 import org.springframework.util.CollectionUtils;
 import system.controller.Queue;
 import system.controller.page.helper.QueueHelper;
+import system.controller.page.listener.ActiveListener;
+import system.controller.page.listener.Command;
+import system.controller.page.listener.Controller;
 import system.controller.to.QueueRow;
 import system.controller.to.ClientTicketRow;
+import system.model.Client;
 import system.view.FactoryPage;
 import system.view.PageEnum;
 
 /**
  * Created by vladimir on 05.04.2018.
  */
-public class ClientTicketController {
+public class ClientTicketController implements Controller {
 
     @FXML
     protected TableView<ClientTicketRow> tickets;
@@ -47,17 +51,11 @@ public class ClientTicketController {
     @FXML
     protected TableColumn<ClientTicketRow, String> duration;
 
-    protected int clientId;
+    protected Client client;
 
     private Stage dialogStage;
 
     private ClientTicketControllerInit controllerInit;
-
-    public void setClientId(int id) {
-        controllerInit = new ClientTicketControllerInit(this);
-        clientId = id;
-        controllerInit.init();
-    }
 
     @FXML
     public void clickOk() {
@@ -91,16 +89,30 @@ public class ClientTicketController {
     * Проверяем наличие активных билетов, если их нет,
     * то переходим сразу же к выбору билета из списка
     * */
-    public void check() {
+    @Override
+    public void execute(Command command) {
         if (CollectionUtils.isEmpty(tickets.getItems()))
             clickAddTicket();
     }
 
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
     private void close() {
         dialogStage.close();
+    }
+
+    @Override
+    public void setStage(Stage stage) {
+        this.dialogStage = stage;
+    }
+
+    @Override
+    public void setListener(ActiveListener listener) {
+
+    }
+
+    @Override
+    public void setActiveClient(Client client) {
+        controllerInit = new ClientTicketControllerInit(this);
+        this.client = client;
+        controllerInit.init();
     }
 }

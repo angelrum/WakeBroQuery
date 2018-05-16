@@ -46,7 +46,7 @@ public class ClientTicketControllerInit {
         try {
 //            Map<ClientTicket, Ticket> allActiveTicket = service.getAllActiveTicket(controller.clientId);
 //            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(allActiveTicket));
-            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(service.getAllActiveTicket(controller.clientId)));
+            controller.tickets.setItems(TicketTableHelper.getClientTicketRowList(service.getAllActiveTicket(controller.client.getId())));
         } catch (NotFoundException e) {
             //ignore
         }

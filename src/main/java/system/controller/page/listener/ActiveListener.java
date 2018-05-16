@@ -5,7 +5,7 @@ import system.model.Client;
 /**
  * Created by vladimir on 01.04.2018.
  */
-public interface ControllerActiveListener {
+public interface ActiveListener {
 
     void refresh();
 
@@ -17,7 +17,7 @@ public interface ControllerActiveListener {
 
     void setClient(Client client);
 
-    int getClientId();
+    Client getClient();
 
     String getInsertNumber();
 }

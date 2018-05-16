@@ -8,7 +8,11 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import system.controller.AuthorizedUser;
 import system.controller.SpringContextUtil;
+import system.controller.page.listener.ActiveListener;
+import system.controller.page.listener.Command;
+import system.controller.page.listener.Controller;
 import system.controller.to.TicketRow;
+import system.model.Client;
 import system.service.ClientTicketService;
 import system.view.FactoryPage;
 
@@ -17,7 +21,7 @@ import java.util.Objects;
 /**
  * Created by vladimir on 08.04.2018.
  */
-public class TicketListController {
+public class TicketListController implements Controller {
 
     @FXML
     protected TableView<TicketRow> tableView;
@@ -45,26 +49,18 @@ public class TicketListController {
 
     private ClientTicketService service = SpringContextUtil.getInstance().getBean(ClientTicketService.class);
 
-    private int clientId;
+    private Client client;
 
     private Stage dialogStage;
 
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
-    }
-
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-    }
-
     @FXML
     public void clickOk() {
-        if (clientId > 0) {
+        if (Objects.nonNull(client)) {
             TicketRow row = tableView.getFocusModel().getFocusedItem();
             if (Objects.isNull(row))
                 FactoryPage.getInstance().showAlert("Выберите билет!", dialogStage);
             else {
-                service.save(clientId, row.getTicket());
+                service.save(client.getId(), row.getTicket());
                 close();
             }
         }
@@ -84,4 +80,23 @@ public class TicketListController {
         dialogStage.close();
     }
 
+    @Override
+    public void setStage(Stage stage) {
+        this.dialogStage = stage;
+    }
+
+    @Override
+    public void setListener(ActiveListener listener) {
+
+    }
+
+    @Override
+    public void setActiveClient(Client client) {
+        this.client = client;
+    }
+
+    @Override
+    public void execute(Command command) {
+
+    }
 }

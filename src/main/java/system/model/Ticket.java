@@ -62,7 +62,7 @@ public class Ticket extends AbstractDateEntity {
 
     @Column
     @Positive
-    private Integer duration;
+    private Integer duration = TICKET_DURATION;
 
     @Column(name = "start_time")
     private LocalTime startTime = LocalTime.of(0, 0);
@@ -79,10 +79,10 @@ public class Ticket extends AbstractDateEntity {
     @Column(name = "year")
     @Min(2018)
     @Max(2099)
-    private Integer year;
+    private Integer year = LocalDate.now().getYear();
 
     @Column(name = "month")
-    private Integer month;
+    private Integer month = 0;
 
     @Column(name = "cost")
     @Min(0)
@@ -100,7 +100,7 @@ public class Ticket extends AbstractDateEntity {
         this.pass = pass;
         this.name = name;
         this.equipment = equipment;
-        this.duration = TICKET_DURATION;
+        //this.duration = TICKET_DURATION;
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDate = startDate;
