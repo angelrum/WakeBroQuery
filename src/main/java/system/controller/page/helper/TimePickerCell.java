@@ -15,12 +15,12 @@ import java.util.Set;
 /**
  * Created by vladimir on 16.05.2018.
  */
-public class TimeCell extends AbstractBaseTableCell<LocalTime> {
+public class TimePickerCell extends AbstractBaseTableCell<LocalTime> {
 
     private JFXTimePicker timePicker;
-    public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    public TimeCell(ObservableList<Ticket> tickets, Set<Ticket> upd, String field) {
+    public TimePickerCell(ObservableList<Ticket> tickets, Set<Ticket> upd, String field) {
         super(tickets, upd, null, field);
     }
 
@@ -52,8 +52,8 @@ public class TimeCell extends AbstractBaseTableCell<LocalTime> {
             setValue(ticket, time);
             upd.add(ticket); //добавляем к списку редактируемых
 //            setText(time==null ? null : time.toString());
-//            commitEdit(time);
             insertValue(time);
+            commitEdit(time);
         });
         setAlignment(Pos.CENTER);
     }
