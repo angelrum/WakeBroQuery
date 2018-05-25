@@ -1,5 +1,7 @@
 package system.model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 @NamedQueries({
         @NamedQuery(name = Client.DELETE, query = "DELETE FROM Client c WHERE c.id=:id"),
-        @NamedQuery(name = Client.GET_ALL, query = "SELECT c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets ORDER BY c.create"),
+        @NamedQuery(name = Client.GET_ALL, query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets ORDER BY c.create"),
         @NamedQuery(name = Client.GET_BY_NUMBER, query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets WHERE c.telnumber=:telnumber")
 })
 
@@ -88,5 +90,18 @@ public class Client extends AbstractNamedEntity {
 
     public void setTickets(List<ClientTicket> tickets) {
         this.tickets = tickets;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "fname = " + getFirstname() + '\'' +
+                "lname = " + getLastname() + '\'' +
+                "sname = " + getSecondname() + '\'' +
+                "telnumber='" + telnumber + '\'' +
+                ", city='" + city + '\'' +
+                ", user=" + user +
+                ", tickets=" + tickets +
+                '}';
     }
 }

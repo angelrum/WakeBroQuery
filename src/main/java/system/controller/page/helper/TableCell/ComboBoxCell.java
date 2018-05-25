@@ -1,7 +1,8 @@
-package system.controller.page.helper;
+package system.controller.page.helper.TableCell;
 
 import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.ObservableList;
+import system.controller.page.helper.TableCell.AbstractBaseTableCell;
 import system.model.Ticket;
 
 import java.util.Objects;
@@ -10,11 +11,11 @@ import java.util.Set;
 /**
  * Created by vladimir on 13.05.2018.
  */
-public class ComboBoxCell <T> extends AbstractBaseTableCell<T> {
+public class ComboBoxCell <S, T> extends AbstractBaseTableCell<S, T> {
     private JFXComboBox<T> comboBox;
 
-    public ComboBoxCell(ObservableList<Ticket> tickets, Set<Ticket> upd, ObservableList<T> values, String field) {
-        super(tickets, upd, values, field);
+    public ComboBoxCell(Set<S> upd, ObservableList<T> values, String field) {
+        super(upd, values, field);
     }
 
     @Override
@@ -23,9 +24,9 @@ public class ComboBoxCell <T> extends AbstractBaseTableCell<T> {
         comboBox.setOnAction(event -> {
             T t = comboBox.getValue();
             int index = getIndex();
-            Ticket ticket = tickets.get(index);
-            setValue(ticket, t);
-            upd.add(ticket);
+            S s = getTableView().getItems().get(index);
+            setValue(s, t);
+            addUpdateItem(s);
             setText(t==null? null : String.valueOf(t));
             commitEdit(t);
         });

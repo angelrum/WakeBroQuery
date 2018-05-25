@@ -46,9 +46,6 @@ public class FactoryPage {
                 break;
             case LOGIN_PAGE:
                 break;
-//            case REGISTRATION_PERSON_PAGE:
-//                showRegistrationPage();
-//                break;
             default:createPage(pageEnum);
         }
     }
@@ -115,10 +112,14 @@ public class FactoryPage {
 
     private MenuBar getMenuBar() {
         MenuBar menuBar = new MenuBar();
-        Menu control = new Menu("Управление");
-        MenuItem controlItem = new MenuItem("Билеты");
+        Menu control = new Menu("Администрирование");
+        MenuItem controlItem = new MenuItem("Управление билетами");
         controlItem.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.TICKET_EDIT));
-        control.getItems().addAll(controlItem);
+
+        MenuItem item = new MenuItem("Управление клиентами");
+        item.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.CLIENT_EDIT));
+
+        control.getItems().addAll(controlItem, item);
         menuBar.getMenus().addAll(control);
 
         final String os = System.getProperty ("os.name");

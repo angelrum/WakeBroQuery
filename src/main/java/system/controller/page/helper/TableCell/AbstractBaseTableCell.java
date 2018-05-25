@@ -1,4 +1,4 @@
-package system.controller.page.helper;
+package system.controller.page.helper.TableCell;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.ContentDisplay;
@@ -12,14 +12,12 @@ import java.util.Set;
 /**
  * Created by vladimir on 13.05.2018.
  */
-public abstract class AbstractBaseTableCell <T> extends TableCell<Ticket, T> {
-    protected ObservableList<Ticket> tickets;
-    protected Set<Ticket> upd;
+public abstract class AbstractBaseTableCell <S, T> extends TableCell<S, T> {
+    protected Set<S> upd;
     private String field;
 
-    public AbstractBaseTableCell(ObservableList<Ticket> tickets, Set<Ticket> upd, ObservableList<T> values, String field) {
+    public AbstractBaseTableCell(Set<S> upd, ObservableList<T> values, String field) {
         super();
-        this.tickets = tickets;
         this.upd = upd;
         this.field = field;
         createControlClass(values);
@@ -39,19 +37,23 @@ public abstract class AbstractBaseTableCell <T> extends TableCell<Ticket, T> {
         }
     }
 
-    protected void setValue(Ticket ticket, T t) {
+    protected void setValue(S s, T t) {
         try {
-            Class clazz = ticket.getClass();
+            Class clazz = s.getClass();
             Field field = clazz.getDeclaredField(this.field);
             field.setAccessible(true);
             if (field.getType()
                     .isAssignableFrom(Pass.class)) {
-                field.set(ticket, Pass.getPassByName(t.toString()));
+                field.set(s, Pass.getPassByName(t.toString()));
             } else
-                field.set(ticket, t);
+                field.set(s, t);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addUpdateItem(S s) {
+        if (upd!=null) upd.add(s);
     }
 
     abstract void createControlClass(ObservableList<T> values);

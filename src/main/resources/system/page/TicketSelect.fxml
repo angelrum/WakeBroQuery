@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="800.0"
-            xmlns="http://javafx.com/javafx/9"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="system.controller.page.TicketListPage.TicketListController"
-            stylesheets="@style/ClientTicketListPage.css">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" stylesheets="@style/ClientTicketListPage.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.TicketListPage.TicketListController">
    <center>
-      <TableView fx:id="tableView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn fx:id="type" editable="false" minWidth="70.0" prefWidth="70.0" text="Тип билета" />
+            <TableColumn fx:id="type" editable="false" minWidth="80.0" text="Тип билета" />
             <TableColumn fx:id="name" editable="false" minWidth="150.0" prefWidth="150.0" text="Название" />
-            <TableColumn fx:id="equipment" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" text="Снаряжение" />
+            <TableColumn fx:id="equipment" editable="false" maxWidth="100.0" minWidth="90.0" prefWidth="90.0" text="Снаряжение" />
             <TableColumn editable="false" prefWidth="75.0" text="Интервал">
                <columns>
                   <TableColumn fx:id="start" editable="false" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="с" />
                   <TableColumn fx:id="end" editable="false" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="по" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="month" editable="false" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Срок действия,мес." />
-            <TableColumn fx:id="duration" editable="false" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Длит.сета,мин." />
+            <TableColumn fx:id="month" editable="false" maxWidth="159.0" minWidth="110.0" prefWidth="110.0" text="Срок &#10;действия, мес." />
+            <TableColumn fx:id="duration" editable="false" maxWidth="171.0" minWidth="80.0" text="Длит.сета,&#10;мин." />
+            <TableColumn fx:id="count" editable="false" maxWidth="120.0" minWidth="70.0" prefWidth="70.0" text="Кол-во" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -34,8 +33,13 @@
    <bottom>
       <Pane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="14.0" layoutY="17.0" mnemonicParsing="false" onAction="#clickOk" text="Выбрать" />
-            <Button layoutX="105.0" layoutY="17.0" mnemonicParsing="false" onAction="#clickCancel" text="Отменить" />
+            <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="17.0" mnemonicParsing="false" onAction="#clickOk" style="-fx-background-color: white" text="Выбрать" />
+            <JFXButton buttonType="RAISED" layoutX="105.0" layoutY="17.0" mnemonicParsing="false" onAction="#clickCancel" style="-fx-background-color: white" text="Отменить" />
+            <JFXCheckBox fx:id="activeList" checkedColor="#1b85e1" layoutX="210.0" layoutY="21.0" onAction="#clickActiveTimeCheck" selected="true" text="Актуальные по времени">
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </JFXCheckBox>
          </children>
       </Pane>
    </bottom>

@@ -93,9 +93,10 @@ CREATE TABLE client_ticket_story
   time_start        TIME DEFAULT CURRENT_TIME NOT NULL,
   time_end          TIME,
   user_id           INTEGER                   NOT NULL,
-  CONSTRAINT story_ticket_idx UNIQUE (client_ticket_id, date, time_start),
   FOREIGN KEY (client_ticket_id) REFERENCES client_ticket(id) ON DELETE CASCADE
 );
+
+/*CREATE UNIQUE INDEX client_ticket_story_index ON client_ticket_story(client_ticket_id, date, time_start); */
 
 CREATE TABLE register
 (

@@ -1,11 +1,12 @@
-package system.controller.page.helper;
+package system.controller.page.helper.TableCell;
 
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.util.StringConverter;
 import org.springframework.util.StringUtils;
-import system.model.Ticket;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -15,13 +16,13 @@ import java.util.Set;
 /**
  * Created by vladimir on 16.05.2018.
  */
-public class TimePickerCell extends AbstractBaseTableCell<LocalTime> {
+public class TimePickerCell <S> extends AbstractBaseTableCell<S, LocalTime> {
 
     private JFXTimePicker timePicker;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    public TimePickerCell(ObservableList<Ticket> tickets, Set<Ticket> upd, String field) {
-        super(tickets, upd, null, field);
+    public TimePickerCell(Set<S> upd, String field) {
+        super(upd, null, field);
     }
 
     @Override
@@ -45,13 +46,15 @@ public class TimePickerCell extends AbstractBaseTableCell<LocalTime> {
                 return null;
             }
         });
+
         timePicker.setOnAction(event -> {
             LocalTime time = timePicker.getValue();
             int index = getIndex();
-            Ticket ticket = tickets.get(index);
-            setValue(ticket, time);
-            upd.add(ticket); //добавляем к списку редактируемых
-//            setText(time==null ? null : time.toString());
+            S s = getTableView().getItems()
+                    .get(index);
+            setValue(s, time);
+            addUpdateItem(s);
+            setText(time==null ? null : time.toString());
             insertValue(time);
             commitEdit(time);
         });
@@ -62,7 +65,7 @@ public class TimePickerCell extends AbstractBaseTableCell<LocalTime> {
     void insertValue(LocalTime item) {
         if (Objects.nonNull(item)) {
             timePicker.setValue(item);
-            setText(item.format(formatter));
+            setText(item.toString());
         }
         setGraphic(this.timePicker);
     }

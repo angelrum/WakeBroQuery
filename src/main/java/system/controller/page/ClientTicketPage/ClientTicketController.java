@@ -1,8 +1,8 @@
 package system.controller.page.ClientTicketPage;
 
+import com.jfoenix.controls.JFXCheckBox;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.util.CollectionUtils;
 import system.controller.Queue;
@@ -21,44 +21,33 @@ import system.view.PageEnum;
  */
 public class ClientTicketController implements Controller {
 
-    @FXML
-    protected TableView<ClientTicketRow> tickets;
+    @FXML protected TableView<ClientTicketRow> tickets;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, String> type;
+    @FXML protected TableColumn<ClientTicketRow, String> type;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, CheckBox> equipment;
+    @FXML protected TableColumn<ClientTicketRow, Boolean> equipment;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, String> start;
+    @FXML protected TableColumn<ClientTicketRow, String> start;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, String> end;
+    @FXML protected TableColumn<ClientTicketRow, String> end;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, String> dateEnd;
+    @FXML protected TableColumn<ClientTicketRow, String> dateEnd;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, Number> maxCount;
+    @FXML protected TableColumn<ClientTicketRow, Number> maxCount;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, VBox> control;
+    @FXML protected TableColumn<ClientTicketRow, Integer> count;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, Number> count;
+    @FXML protected TableColumn<ClientTicketRow, String> duration;
 
-    @FXML
-    protected TableColumn<ClientTicketRow, String> duration;
+    @FXML protected JFXCheckBox activeList;
 
     protected Client client;
 
     private Stage dialogStage;
 
-    private ClientTicketControllerInit controllerInit;
+    private ClientTicketControllerInit controller;
 
-    @FXML
-    public void clickOk() {
+    @FXML public void clickOk() {
         ClientTicketRow row = tickets
                 .focusModelProperty()
                 .get()
@@ -72,17 +61,25 @@ public class ClientTicketController implements Controller {
         }
     }
 
-    @FXML
-    public void clickCancel() {
+    @FXML public void clickCancel() {
         close();
     }
 
-    @FXML
-    public void clickAddTicket() {
+    @FXML public void clickAddTicket() {
         dialogStage.toBack();
         FactoryPage.getInstance().showPage(PageEnum.TICKET_LIST);
+        refresh();
         dialogStage.toFront();
-        controllerInit.init();
+    }
+
+    @FXML public void clickActiveTimeCheck() {
+        controller.setActiveList(activeList.isSelected());
+        refresh();
+    }
+
+    private void refresh() {
+        controller.init();
+        tickets.refresh();
     }
 
     /*
@@ -111,8 +108,8 @@ public class ClientTicketController implements Controller {
 
     @Override
     public void setActiveClient(Client client) {
-        controllerInit = new ClientTicketControllerInit(this);
+        controller = new ClientTicketControllerInit(this);
         this.client = client;
-        controllerInit.init();
+        refresh();
     }
 }

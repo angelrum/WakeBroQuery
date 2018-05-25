@@ -27,6 +27,8 @@ public class TicketRow {
 
     private SimpleStringProperty month = new SimpleStringProperty();
 
+    private SimpleIntegerProperty count = new SimpleIntegerProperty(1);
+
     private Ticket ticket;
 
     public TicketRow(Ticket ticket) {
@@ -64,6 +66,10 @@ public class TicketRow {
         return ticket;
     }
 
+    public int getCount() {
+        return count.get();
+    }
+
     public SimpleIntegerProperty durationProperty() {
         return duration;
     }
@@ -78,5 +84,9 @@ public class TicketRow {
 
     public SimpleStringProperty monthProperty() {
         return month;
+    }
+
+    public SimpleIntegerProperty countProperty() {
+        return count;
     }
 }

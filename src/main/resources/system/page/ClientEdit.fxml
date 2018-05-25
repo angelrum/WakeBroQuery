@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableColumn?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?scenebuilder-stylesheet style/TableViewStyle.css?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.ClientEditPage.ClientEditPageController">
+    <center>
+        <VBox maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <HBox alignment="BASELINE_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0">
+            <children>
+               <JFXTextField fx:id="search" alignment="BASELINE_LEFT" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="200.0" promptText="Поиск...">
+                  <HBox.margin>
+                     <Insets bottom="10.0" right="10.0" top="10.0" />
+                  </HBox.margin>
+               </JFXTextField>
+            </children>
+         </HBox>
+            <JFXTreeTableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+                <columns>
+                    <JFXTreeTableColumn fx:id="telnumber" prefWidth="75.0" text="Номер телефона" />
+                    <JFXTreeTableColumn fx:id="lname" prefWidth="75.0" text="Фамилия" />
+                    <JFXTreeTableColumn fx:id="fname" prefWidth="75.0" text="Имя" />
+                    <JFXTreeTableColumn fx:id="sname" prefWidth="75.0" text="Отчество" />
+                    <JFXTreeTableColumn fx:id="city" prefWidth="75.0" text="Город" />
+                    <JFXTreeTableColumn fx:id="dateCreate" maxWidth="120.0" minWidth="120.0" prefWidth="120.0" text="Дата добавления" />
+                    <JFXTreeTableColumn fx:id="userCreate" prefWidth="75.0" text="Пользователь" />
+                    <JFXTreeTableColumn fx:id="delicon" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" text="Удалить" />
+                </columns>
+            <columnResizePolicy>
+               <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            </JFXTreeTableView>
+        </VBox>
+    </center>
+    <bottom>
+        <AnchorPane BorderPane.alignment="CENTER">
+            <children>
+                <ButtonBar prefHeight="40.0" prefWidth="250.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="15.0">
+                    <buttons>
+                        <JFXButton buttonType="RAISED" onAction="#clickOk" style="-fx-background-color: white;" text="Сохранить" />
+                        <JFXButton buttonType="RAISED" onAction="#clickCancel" style="-fx-background-color: white;" text="Отменить" />
+                    </buttons>
+                </ButtonBar>
+                <ButtonBar maxWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0">
+                    <buttons>
+                        <JFXButton buttonType="RAISED" onAction="#clickCreate" style="-fx-background-color: white;" text="Добавить нового клиента" />
+                    </buttons>
+                </ButtonBar>
+            </children>
+        </AnchorPane>
+    </bottom>
+    <stylesheets>
+        <URL value="@style/TableViewStyle.css" />
+    </stylesheets>
+</BorderPane>

@@ -15,6 +15,10 @@
     -fx-alignment: baseline-center;
 }
 
+.table-column > .label > .text {
+    -fx-text-alignment: center;
+}
+
 .button-up {
     -fx-background-image: url("../../image/up.png");
 }

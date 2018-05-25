@@ -6,6 +6,8 @@ package system.controller.page.BasicPage;
  * Класс описывает работу секундомера и подсчет суммарного времени очереди
  */
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import system.controller.Queue;
 
 import java.io.Closeable;
@@ -14,6 +16,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import static system.util.TicketUtil.*;
+import static system.controller.page.helper.FontAwesomeIconHelper.*;
 
 public class StopWatchController implements Closeable {
 
@@ -25,26 +28,51 @@ public class StopWatchController implements Closeable {
         this.controller = controller;
     }
 
+    /********      Init block      ********/
+
     public void init() {
+        controller.play.getStyleClass().add("play-button");
         initPlay();
+        initStop();
         controller.play.setOnAction(event -> {
-            if (controller.play.getStyleClass().contains("play-active"))
+            if (!timer.isAlive() || !timer.isActive())
                 clickPlay();
-            else clickPause();
+            else
+                clickPause();
         });
 
         controller.stop.setOnAction(event -> clickStop());
     }
 
+    private void initStop() {
+        controller.stop.getStyleClass().add("play-button");
+        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.STOP_CIRCLE);
+        icon.getStyleClass().add("stop-time");
+        controller.stop.setGraphic(icon);
+    }
+
+    private void initPlay() {
+        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.PLAY_CIRCLE);
+        icon.getStyleClass().add("play-time");
+        controller.play.setGraphic(getPane(icon));
+    }
+
+    private void initPause() {
+        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.PAUSE_CIRCLE);
+        icon.getStyleClass().add("pause-time");
+        controller.play.setGraphic(getPane(icon));
+    }
+
+    /********      End block      ********/
+
     private void clickPlay() {
-        controller.play.getStyleClass().remove("play-active");
-        controller.play.getStyleClass().add("play-disactive");
-        if (!timer.isAlive())
-            timer.start();
-        else if (!timer.isActive())
-        {
-            timer.setActive(true);
-        }
+        if (!Queue.getInstance().checkActive()) return;
+
+        initPause();
+        if (!timer.isAlive())       timer.start();
+        else if (!timer.isActive()) timer.setActive(true);
+
+        Queue.getInstance().startReedemTicket();
     }
 
     private void clickPause() {
@@ -53,15 +81,12 @@ public class StopWatchController implements Closeable {
             timer.setActive(false);
     }
 
-    private void initPlay() {
-        controller.play.getStyleClass().clear();
-        controller.play.getStyleClass().addAll("play-button", "play-active");
-    }
-
     private void clickStop() {
         initPlay();
-        if (timer.isAlive()) timer.reset();
-
+        if (timer.onPause())
+            endtime();
+        if (timer.isAlive())
+            timer.reset();
     }
 
     private void endtime() {
@@ -71,12 +96,14 @@ public class StopWatchController implements Closeable {
         controller.play
                 .getStyleClass()
                 .add("play-active");
-        Queue.getInstance().reedeemTicket();//сообщить очереди, что необходимо списать билет
+        Queue.getInstance()
+                .endReedeemTicket();//сообщить очереди, что необходимо списать билет
     }
 
     private void insertTime(long time) {
         LocalTime localTime = LocalTime.ofSecondOfDay(time);
         controller.timer.setText(localTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+        Queue.getInstance().updateTotalTime(time);
     }
 
     private class Timer extends Thread {
@@ -97,19 +124,21 @@ public class StopWatchController implements Closeable {
             return active;
         }
 
+        boolean onPause() { return value!=0; }
+
         @Override
         public void run() {
             while (true) {
                 while (active) {
                     try {
                         value+=1;
-                        if (max > value) {
+                        if (max + 1 > value) {
                             insertTime(value);
                         } else {
                             reset();
                             endtime();
                         }
-                        Thread.currentThread().sleep(1000);
+                        Thread.currentThread().sleep(999);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

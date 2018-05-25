@@ -46,7 +46,7 @@ public class Ticket extends AbstractDateEntity {
     @Column(name = "pass")
     @Enumerated(EnumType.STRING)
     @NotBlank
-    private Pass pass;
+    private Pass pass = Pass.SECOND_PASS;
 
     @Column(name = "name")
     @NotBlank

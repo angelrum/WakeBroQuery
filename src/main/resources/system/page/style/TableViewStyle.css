@@ -1,0 +1,63 @@
+.root {
+    -fx-font-family: 'Helvetica Neue';
+    -fx-font-style: normal;
+    -fx-font-size: 14px;
+    -fx-font-weight: lighter;
+}
+
+.table-column > .label {
+    -fx-alignment: baseline-center;
+}
+
+.table-column > .label > .text {
+    -fx-font-family: 'Helvetica Neue';
+    -fx-text-alignment: center;
+    -fx-font-size: 14px;
+}
+
+.column.table-cell {
+    -fx-alignment: baseline-center;
+}
+
+.icon {
+    -fx-font-family: FontAwesome;-fx-fill:#e25050; -fx-font-size:1.5em;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: #4059A9;
+    -jfx-unfocus-color: #009688;
+}
+
+.jfx-check-box {
+    -jfx-unchecked-color: #5A5A5A;
+    -jfx-checked-color: #009688;
+}
+
+/*******************************************************************************
+*                                                                              *
+* JFoenix Tree Table View                                                      *
+*                                                                              *
+*******************************************************************************/
+
+.tree-table-view .tree-table-cell {
+    -fx-border-color: #e8e9e8;
+    -fx-border-width: 1px;
+    -fx-padding: 0 10 0 10;
+    -fx-alignment: baseline-left;
+    -fx-font-family: 'Helvetica Neue';
+    -fx-font-size: 14px;
+}
+.tree-table-view .tree-table-cell:nth-child(even) {
+    -fx-background-color: #f7f7f7;
+
+}
+
+.tree-table-view .column-header .label {
+    -fx-text-fill: black;
+    -fx-padding: 10 0 10 0;
+}
+
+.tree-table-view .column-header-background {
+    -fx-border-width: 0 0.0 1 0;
+    -fx-border-color: #F3F3F3;
+}

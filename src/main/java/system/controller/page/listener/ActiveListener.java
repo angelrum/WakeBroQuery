@@ -20,4 +20,6 @@ public interface ActiveListener {
     Client getClient();
 
     String getInsertNumber();
+
+    void setTotalValue(long value);
 }

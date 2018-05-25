@@ -1,5 +1,7 @@
 package system.controller.page.BasicPage;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import system.MainApp;
@@ -8,6 +10,8 @@ import system.controller.Queue;
 /**
  * Created by vladimir on 01.04.2018.
  */
+
+import static system.controller.page.helper.FontAwesomeIconHelper.*;
 public class BasicPageControllerInit {
     private BasicPageController controller;
 
@@ -18,12 +22,13 @@ public class BasicPageControllerInit {
     public void init() {
         fieldInit();
         queueInit();
+        //initPlay();
         controller.cancelDisable();
         controller.refresh();
     }
 
     private void fieldInit() {
-        controller.telNumber.setListener(controller);
+        controller.telnumber.setListener(controller);
         controller.cancel.setGraphic(new ImageView(new Image(MainApp.class.getResourceAsStream("image/cancel.png"))));
     }
 
@@ -34,7 +39,6 @@ public class BasicPageControllerInit {
         controller.lStatusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         controller.cStatusColumn.setCellValueFactory(cellData -> cellData.getValue().cstatusProperty());
         controller.deleteColumn.setCellValueFactory(cellData -> cellData.getValue().deleteProperty());
-        controller.idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
         controller.queue.setItems(Queue.getInstance().getQueueRows());
     }
 }

@@ -1,20 +1,27 @@
 package system.controller.page.BasicPage;
 
+import system.controller.Queue;
 import system.controller.page.listener.ActiveListener;
 import system.controller.page.helper.ButtonSubmitEnum;
 import system.model.Client;
 import system.view.FactoryPage;
 import system.view.PageEnum;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Created by vladimir on 01.04.2018.
  */
 public class BasicPageActive implements ActiveListener {
 
+    private final String TOTAL_FORMAT = "Длительность очереди %s";
+
     private BasicPageController controller;
 
     public BasicPageActive(BasicPageController controller) {
         this.controller = controller;
+        Queue.getInstance().setTotalListener(this); //для определения длительности очереди
     }
 
     public void refresh() {
@@ -22,17 +29,17 @@ public class BasicPageActive implements ActiveListener {
         controller.fname.setVisible(false);
         controller.lname.setVisible(false);
         controller.sname.setVisible(false);
-        controller.telNumber.setListener(controller);
+        controller.telnumber.setListener(controller);
         controller.submit.setText("Зарегистрировать", ButtonSubmitEnum.REGISTRATION);
     }
 
     public void clear() {
         refresh();
-        controller.telNumber.clear();
+        controller.telnumber.clear();
     }
 
     public void clickCancelButton() {
-        controller.telNumber.clear();
+        controller.telnumber.clear();
         controller.cancelDisable();
         refresh();
     }
@@ -52,7 +59,7 @@ public class BasicPageActive implements ActiveListener {
 
     public void setClient(Client client) {
         controller.client = client;
-        controller.telNumber.setText(client.getTelnumber());
+        controller.telnumber.setText(client.getTelnumber());
         controller.fname.setText(client.getFirstname());
         controller.lname.setText(client.getLastname());
         controller.sname.setText(client.getSecondname());
@@ -70,6 +77,16 @@ public class BasicPageActive implements ActiveListener {
 
     @Override
     public String getInsertNumber() {
-        return controller.telNumber.getText();
+        return controller.telnumber.getText();
+    }
+
+    @Override
+    public void setTotalValue(long value) {
+        if (value==0)
+            controller.total.setText("");
+        else {
+            LocalTime time = LocalTime.ofSecondOfDay(value);
+            controller.total.setText(String.format(TOTAL_FORMAT, time.format(DateTimeFormatter.ofPattern("mm:ss"))));
+        }
     }
 }

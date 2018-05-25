@@ -13,4 +13,10 @@ import static system.TestData.TicketData.*;
  */
 public class ClientTicketData {
     public static ClientTicket CLIENT1_TICKET = new ClientTicket(ADMIN, CLIENT1, ABN_PASS, LocalDate.now(), LocalDate.now());
+
+    static {
+        CLIENT1_TICKET.setId(100007);
+    }
+
+
 }

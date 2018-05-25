@@ -2,6 +2,7 @@ package system.controller.page.BasicPage;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -17,59 +18,42 @@ import system.model.Client;
  * Created by vladimir on 01.04.2018.
  */
 public class BasicPageController implements Controller {
-    @FXML
-    protected NumberTextField telNumber;
 
-    @FXML
-    protected Text fname;
+    @FXML protected NumberTextField telnumber;
 
-    @FXML
-    protected Text lname;
+    @FXML protected Text fname;
 
-    @FXML
-    protected Text sname;
+    @FXML protected Text lname;
 
-    @FXML
-    protected Button cancel;
+    @FXML protected Text sname;
 
-    @FXML
-    protected ButtonSubmit submit;
+    @FXML protected Button cancel;
 
-    @FXML
-    protected TableView<QueueRow> queue;
+    @FXML protected ButtonSubmit submit;
 
-    @FXML
-    protected TableColumn<QueueRow, Number> idColumn;
+    @FXML protected TableView<QueueRow> queue;
 
-    @FXML
-    protected TableColumn<QueueRow, VBox> lControl;
+    @FXML protected TableColumn<QueueRow, Number> idColumn;
 
-    @FXML
-    protected TableColumn<QueueRow, Label> lStatusColumn;
+    @FXML protected TableColumn<QueueRow, VBox> lControl;
 
-    @FXML
-    protected TableColumn<QueueRow, CheckBox> cStatusColumn;
+    @FXML protected TableColumn<QueueRow, StackPane> lStatusColumn;
 
-    @FXML
-    protected TableColumn<QueueRow, Button> deleteColumn;
+    @FXML protected TableColumn<QueueRow, CheckBox> cStatusColumn;
 
-    @FXML
-    protected TableColumn<QueueRow, String> fioColumn;
+    @FXML protected TableColumn<QueueRow, StackPane> deleteColumn;
 
-    @FXML
-    protected TableColumn<QueueRow, String> abnColumn;
+    @FXML protected TableColumn<QueueRow, TextField> fioColumn;
 
-    @FXML
-    protected Button play;
+    @FXML protected TableColumn<QueueRow, TextField> abnColumn;
 
-    @FXML
-    protected Button stop;
+    @FXML protected Button play;
 
-    @FXML
-    protected Text timer;
+    @FXML protected Button stop;
 
-    @FXML
-    protected Text total;
+    @FXML protected Text timer;
+
+    @FXML protected Text total;
 
     protected Client client;
 
@@ -95,8 +79,6 @@ public class BasicPageController implements Controller {
     public void refresh() {
         controllerActive.refresh();
     }
-
-    //public void clear() {controllerActive.clear();}
 
     public void cancelEnable() {
         cancel.setDisable(false);

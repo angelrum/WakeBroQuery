@@ -10,23 +10,18 @@ import system.model.ClientTicket;
 import system.model.Ticket;
 import system.service.ClientService;
 
+import java.util.Collections;
+
 /**
  * Created by vladimir on 01.04.2018.
  */
 public class QueueHelper {
-    private static ClientService service = SpringContextUtil.getInstance().getBean(ClientService.class);
-
-    public static QueueRow transformToQueueRow(ClientTicket clientTicket, Ticket ticket) {
-        QueueRow row = new QueueRow(service.get(clientTicket.getClient().getId()), clientTicket, ticket);
-        row.setListener(Queue.getInstance());
-        return row;
-    }
 
     public static QueueRow transformToQueueRow(ClientTicketRow row) {
-        Client client = service.get(row.getClientTicket().getClient().getId());
-        QueueRow rowQueue = new QueueRow(client, row.getClientTicket(), row.getTicket(), row.getCount().intValue());
-        rowQueue.setListener(Queue.getInstance());
-        return rowQueue;
+        int count = row.getCount();
+        QueueRow queueRow = new QueueRow(row.getTickets().subList(0, count));
+        queueRow.setListener(Queue.getInstance());
+        return queueRow;
     }
 
     public static boolean checkNotEmptyActiveQueue() {

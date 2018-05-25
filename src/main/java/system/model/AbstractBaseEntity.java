@@ -1,5 +1,7 @@
 package system.model;
 
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
 import javax.persistence.*;
 
 /**

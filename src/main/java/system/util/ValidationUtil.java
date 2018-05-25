@@ -1,10 +1,10 @@
 package system.util;
 
 import org.springframework.util.Assert;
-import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import system.MainApp;
 import system.model.AbstractBaseEntity;
+import system.model.Client;
 import system.model.Ticket;
 import system.service.exception.NotFoundException;
 
@@ -19,7 +19,7 @@ import static system.util.Helper.*;
  */
 public class ValidationUtil {
 
-    private static final InputStream TICKET_ERR = MainApp.class.getResourceAsStream("validation.properties");
+    private static final InputStream ERROR_PROP = MainApp.class.getResourceAsStream("validation.properties");
 
     public static <T> List<T> checkNullOrEmptyList(List<T> list) throws NotFoundException {
         String msg = "List is null";
@@ -57,7 +57,6 @@ public class ValidationUtil {
     }
 
     public static boolean checkTelNumber(String number) {
-        //if (number.endsWith("_")) return false;
         String telnumber = number.replaceAll("[\\+|\\)|\\(|\\-|_]", "");
         if (StringUtils.hasLength(telnumber)
                 && telnumber.length()==11)
@@ -72,38 +71,56 @@ public class ValidationUtil {
 
     public static String checkTicket(Ticket ticket, int pos) {
         StringBuilder builder = new StringBuilder();
-        Properties err = getProperties(TICKET_ERR);
+        Properties err = getProperties(ERROR_PROP);
         checkNotNull(err);
-        if (!StringUtils.hasText(ticket.getName()))
-            insertErText(err, pos, "ticket.err.name", builder);
+        if (checkNoText(ticket.getName()))              insertErText(err, pos, "ticket.err.name", builder);
         if (Objects.isNull(ticket.getStartTime())
-                || Objects.isNull(ticket.getEndTime()))
-            insertErText(err, pos, "ticket.err.time.null", builder);
-        else if (ticket.getStartTime().isAfter(ticket.getEndTime()))
-            insertErText(err, pos, "ticket.err.time", builder);
-        else if (ticket.getStartTime().compareTo(ticket.getEndTime())==0)
-            insertErText(err, pos, "ticket.err.time_equals", builder);
+                || Objects.isNull(ticket.getEndTime())) insertErText(err, pos, "ticket.err.time.null", builder);
+        else if (ticket.getStartTime()
+                .isAfter(ticket.getEndTime()))          insertErText(err, pos, "ticket.err.time", builder);
+        else if (ticket.getStartTime()
+                .compareTo(ticket.getEndTime())==0)     insertErText(err, pos, "ticket.err.time_equals", builder);
 
-        if (Objects.isNull(ticket.getStartDate()) && Objects.isNull(ticket.getEndDate())){
+        if (Objects.isNull(ticket.getStartDate())
+                && Objects.isNull(ticket.getEndDate())){
           //ignore
-        } else if ((Objects.nonNull(ticket.getStartDate()) && Objects.isNull(ticket.getEndDate())
-        || Objects.isNull(ticket.getStartDate()) && Objects.nonNull(ticket.getEndDate())))
-            insertErText(err, pos, "ticket.err.duration_date", builder);
-        else if (ticket.getStartDate().compareTo(ticket.getEndDate())==0)
-            insertErText(err, pos, "ticket.err.date_equals", builder);
-        else if (ticket.getStartDate().isAfter(ticket.getEndDate()))
-            insertErText(err, pos, "ticket.err.date_bigger", builder);
+        } else if ((Objects.nonNull(ticket.getStartDate())
+                && Objects.isNull(ticket.getEndDate())
+                    || Objects.isNull(ticket.getStartDate())
+                && Objects.nonNull(ticket.getEndDate())))insertErText(err, pos, "ticket.err.duration_date", builder);
+        else if (ticket.getStartDate()
+                .compareTo(ticket.getEndDate())==0)      insertErText(err, pos, "ticket.err.date_equals", builder);
+        else if (ticket.getStartDate()
+                .isAfter(ticket.getEndDate()))           insertErText(err, pos, "ticket.err.date_bigger", builder);
 
         if (Objects.nonNull(ticket.getStartDate())
                 && Objects.nonNull(ticket.getEndDate())
-                && ticket.getMonth() > 0)
-            insertErText(err, pos, "ticket.err.duration_date_month", builder);
+                && ticket.getMonth() > 0)                insertErText(err, pos, "ticket.err.duration_date_month", builder);
 
         return builder.toString();
     }
+    
+    public static String checkClient(Client client, int pos) {
+        StringBuilder builder = new StringBuilder();
+        Properties err = getProperties(ERROR_PROP);
+        checkNotNull(err);
+        
+        if (checkNoText(client.getFirstname()))         insertErText(err, pos, "client.err.fname", builder);
+        if (checkNoText(client.getLastname()))          insertErText(err, pos, "client.err.lname", builder);
+        if (checkNoText(client.getSecondname()))        insertErText(err, pos, "client.err.sname", builder);
+        if (checkNoText(client.getCity()))              insertErText(err, pos, "client.err.city", builder);
+        if (checkNoText(client.getTelnumber()))         insertErText(err, pos, "client.err.telnumber", builder);
+        else if (!checkTelNumber(client.getTelnumber())) insertErText(err, pos, "client.err.telnumber_exist", builder);
+        
+        return builder.toString();
+    }
+    
+    private static boolean checkNoText(String text) {
+        return !StringUtils.hasText(text);
+    }
 
     private static void insertErText(Properties err, int pos, String prop, StringBuilder builder) {
-        builder.append(String.format(err.getProperty("ticket.err.format"), pos, err.getProperty(prop)));
+        builder.append(String.format(err.getProperty("err.format"), pos + 1, err.getProperty(prop)));
     }
 
 }

@@ -1,11 +1,10 @@
-package system.controller.page.helper;
+package system.controller.page.helper.TableCell;
 
 import com.jfoenix.controls.JFXDatePicker;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.util.StringConverter;
 import org.springframework.util.StringUtils;
-import system.model.Ticket;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,12 +14,12 @@ import java.util.Set;
 /**
  * Created by vladimir on 16.05.2018.
  */
-public class DateCell extends AbstractBaseTableCell<LocalDate> {
+public class DatePickerCell <S> extends AbstractBaseTableCell<S, LocalDate> {
     private JFXDatePicker datePicker;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public DateCell(ObservableList<Ticket> tickets, Set<Ticket> upd, String field) {
-        super(tickets, upd, null, field);
+    public DatePickerCell(Set<S> upd, String field) {
+        super(upd, null, field);
     }
 
     @Override
@@ -44,9 +43,9 @@ public class DateCell extends AbstractBaseTableCell<LocalDate> {
         datePicker.setOnAction(event -> {
             LocalDate date = datePicker.getValue();
             int index = getIndex();
-            Ticket ticket = tickets.get(index);
-            setValue(ticket, date);
-            upd.add(ticket); //добавляем к списку редактируемых
+            S s = getTableView().getItems().get(index);
+            setValue(s, date);
+            addUpdateItem(s);
             //setText(date==null ? null : date.toString());
             insertValue(date);
             commitEdit(date);

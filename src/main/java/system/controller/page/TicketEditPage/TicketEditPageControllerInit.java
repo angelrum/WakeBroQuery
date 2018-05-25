@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 import org.springframework.util.StringUtils;
 import system.controller.SpringContextUtil;
 import system.controller.page.helper.*;
-import system.controller.page.helper.DateCell;
+import system.controller.page.helper.TableCell.*;
 import system.model.Pass;
 import system.model.Ticket;
 import system.service.TicketService;
@@ -38,7 +38,6 @@ public class TicketEditPageControllerInit {
     private Integer[] months = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
     private Set<Ticket> bufferUpd = new HashSet<>();
-
     private Set<Ticket> bufferDel = new HashSet<>();
 
 
@@ -80,49 +79,28 @@ public class TicketEditPageControllerInit {
     }
 
     private void initEdit() {
-        ObservableList<Ticket> tickets = FXCollections.observableArrayList(service.getAll());
         ObservableList<String> passes = FXCollections.observableArrayList(Stream.of(Pass.values()).map(Pass::getName).collect(Collectors.toList()));
         ObservableList<Integer> month = FXCollections.observableArrayList(months);
+        ObservableList<Ticket> tickets = FXCollections.observableArrayList(service.getAll());
 
-        controller.passColumn.setCellFactory(param -> new ComboBoxCell<String>(tickets, bufferUpd, passes, "pass"));
-        //controller.nameColumn.setCellFactory((TextFieldTableCell.forTableColumn()));
-        controller.nameColumn.setCellFactory(param -> new TableCell<Ticket, String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                JFXTextField field = new JFXTextField();
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else if(isEditing()) {
-                    setContentDisplay(ContentDisplay.TEXT_ONLY);
-                } else {
-                    field.setText(item);
-                    setText(item);
-                    setGraphic(field);
-                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                }
-            }
-        });
-        controller.enableColumn.setCellFactory(param -> new CheckBoxCell(tickets, bufferUpd, null, "enable"));
-        controller.equipmentColumn.setCellFactory(param -> new CheckBoxCell(tickets, bufferUpd, null, "equipment"));
+        controller.passColumn.setCellFactory(param -> new ComboBoxCell<Ticket, String>(bufferUpd, passes, "pass"));
+        controller.nameColumn.setCellFactory((TextFieldTableCell.forTableColumn()));
+        controller.nameColumn.setCellFactory(param -> new TextFieldCell<Ticket, String>(bufferUpd, null, "name"));
+        controller.enableColumn.setCellFactory(param -> new CheckBoxCell<Ticket>(bufferUpd, null, "enable"));
+        controller.equipmentColumn.setCellFactory(param -> new CheckBoxCell<Ticket>(bufferUpd, null, "equipment"));
         controller.durationColumn.editableProperty().setValue(false);
-        controller.startDateColumn.setCellFactory(param -> new DateCell(tickets, bufferUpd, "startDate"));
-        controller.endDateColumn.setCellFactory(param -> new DateCell(tickets, bufferUpd, "endDate"));
-        controller.startTimeColumn.setCellFactory(param -> new TimePickerCell(tickets, bufferUpd, "startTime"));
-        controller.endTimeColumn.setCellFactory(param -> new TimePickerCell(tickets, bufferUpd, "endTime"));
-        controller.monthColumn.setCellFactory(param -> new ComboBoxCell<Integer>(tickets, bufferUpd, month, "month"));
-        controller.costColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleConverter()));
-        controller.weekcostColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleConverter()));
+        controller.startDateColumn.setCellFactory(param -> new DatePickerCell<Ticket>(bufferUpd, "startDate"));
+        controller.endDateColumn.setCellFactory(param -> new DatePickerCell<Ticket>(bufferUpd, "endDate"));
+        controller.startTimeColumn.setCellFactory(param -> new TimePickerCell<Ticket>(bufferUpd, "startTime"));
+        controller.endTimeColumn.setCellFactory(param -> new TimePickerCell<Ticket>(bufferUpd, "endTime"));
+        controller.monthColumn.setCellFactory(param -> new ComboBoxCell<Ticket, Integer>(bufferUpd, month, "month"));
+        controller.costColumn.setCellFactory(param -> new TextFieldCell<Ticket, Double>(bufferUpd, null, "cost", new DoubleConverter()));
+        controller.weekcostColumn.setCellFactory(param -> new TextFieldCell<Ticket, Double>(bufferUpd, null, "weekendcost", new DoubleConverter()));
         controller.ticketView.setItems(tickets);
     }
 
     private void initEvent() {
-        //controller.passColumn.setOnEditCommit(event -> getEditTicket(event).setPass(Pass.getPassByName(event.getNewValue())));
         controller.nameColumn.setOnEditCommit(event -> getEditTicket(event).setName(event.getNewValue()));
-        //controller.startTimeColumn.setOnEditCommit(event -> getEditTicket(event).setStartTime(event.getNewValue()));
-        //controller.endTimeColumn.setOnEditCommit(event -> getEditTicket(event).setEndTime(event.getNewValue()));
-        //controller.monthColumn.setOnEditCommit(event -> getEditTicket(event).setMonth(event.getNewValue()));
         controller.costColumn.setOnEditCommit(event -> getEditTicket(event).setCost(event.getNewValue()));
         controller.weekcostColumn.setOnEditCommit(event -> getEditTicket(event).setWeekendcost(event.getNewValue()));
         controller.ticketView.setOnMouseClicked(event -> controller.ticketView.getSelectionModel().clearSelection());
@@ -150,16 +128,12 @@ public class TicketEditPageControllerInit {
     }
 
     private StackPane getButtonDelete(Ticket ticket) {
-        FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.TRASH_ALT);
-        icon.setStyleClass("icon");
-        StackPane pane = new StackPane();
-        pane.setAlignment(Pos.CENTER);
-        pane.getChildren().add(icon);
+        FontAwesomeIconView icon = FontAwesomeIconHelper.getIconView(FontAwesomeIcon.TRASH_ALT);
         icon.setOnMouseClicked(event -> {
             bufferDel.add(ticket);
             controller.ticketView.getItems().remove(ticket);
         });
-        return pane;
+        return FontAwesomeIconHelper.getPane(icon);
     }
 
     private String getError() {
@@ -185,6 +159,7 @@ public class TicketEditPageControllerInit {
     public void create() {
         Ticket ticket = new Ticket();
         controller.ticketView.getItems().add(ticket);
+        controller.ticketView.refresh();
     }
 
     public void cancel() {

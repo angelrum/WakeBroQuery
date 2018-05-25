@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * Created by vladimir on 01.04.2018.
  */
+@Deprecated
 public interface CustomerTicketService {
 
     Map<ClientTicket, Ticket> getAll(int clientId);

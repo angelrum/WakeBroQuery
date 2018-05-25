@@ -8,12 +8,19 @@ import java.time.LocalTime;
 /**
  * Created by vladimir on 27.04.2018.
  */
+@NamedQueries({
+        @NamedQuery(name = ClientTicketStory.GET_ALL, query = "SELECT st FROM ClientTicketStory st WHERE st.clientTicket.client.id =:clientId"),
+        @NamedQuery(name = ClientTicketStory.DELETE, query = "DELETE FROM ClientTicketStory st WHERE st.id=:storyId"),
+        @NamedQuery(name = ClientTicketStory.GET_ACTIVE, query = "SELECT st FROM ClientTicketStory st WHERE st.clientTicket.client.id=:clientId AND st.timeEnd IS NULL")
+})
 @Entity
-@Table(name = "client_ticket_story",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"client_ticket_id", "date", "time_start"}, name = "story_ticket_idx"))
+@Table(name = "client_ticket_story")
 public class ClientTicketStory extends AbstractBaseEntity {
+    public static final String GET_ALL = "client_ticket_story.get_all";
+    public static final String DELETE = "client_ticket_story.delete";
+    public static final String GET_ACTIVE = "client_ticket_story.get_active";
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_ticket_id")
     private ClientTicket clientTicket;
 
@@ -35,9 +42,8 @@ public class ClientTicketStory extends AbstractBaseEntity {
     public ClientTicketStory() {
     }
 
-    public ClientTicketStory(ClientTicket clientTicket, User user) {
+    public ClientTicketStory(ClientTicket clientTicket) {
         this.clientTicket = clientTicket;
-        this.user         = user;
         this.date         = LocalDate.now();
         this.timeStart    = LocalTime.now();
     }
