@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import system.model.ClientTicket;
 import system.repository.ClientTicketRepository;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,7 +23,6 @@ public class InMemoryClientTicketRepository implements ClientTicketRepository {
 
     private int id = 0;
 
-    @PostConstruct
     public void init() {
         List<ClientTicket> list = Arrays.asList(
                 //new ClientTicket(0, 1, 1),

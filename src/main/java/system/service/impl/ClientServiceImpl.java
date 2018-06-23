@@ -43,7 +43,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<Client> getAll() throws NotFoundException {
-        return checkNullOrEmptyList(repository.getAll());
+        //return checkNullOrEmptyList(repository.getAll());
+        return repository.getAll();
     }
 
     @Override

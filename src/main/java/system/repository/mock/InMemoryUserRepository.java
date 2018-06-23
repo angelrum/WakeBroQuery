@@ -7,7 +7,6 @@ import system.model.Role;
 import system.model.User;
 import system.repository.UserRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 import static system.util.ValidationUtil.*;
@@ -22,12 +21,12 @@ public class InMemoryUserRepository implements UserRepository {
     private Map<Integer, User> users = new HashMap<>();
     private int id = 0;
 
-    @PostConstruct
+
     public void init() {
         log.info("+++ PostConstruct +++");
         List<User> list = Arrays.asList(
-                new User("Иванов", "Андрей", "Олегович", "admin", "admin", "admin@mail.ru", Role.ADMIN),
-                new User("Иванов", "Антон", "Андреевич", "user", "password", "user@mail.ru", Role.USER)
+                new User("Иванов", "Андрей", "Олегович", "+79111111111", "admin", "admin", "admin@mail.ru", Role.ADMIN),
+                new User("Иванов", "Антон", "Андреевич", "+79111111111", "user", "password", "user@mail.ru", Role.USER)
         );
         list.forEach(this::save);
     }
@@ -59,7 +58,6 @@ public class InMemoryUserRepository implements UserRepository {
         return users.values()
                 .stream()
                 .filter(user -> login.equals(user.getLogin()))
-                .findFirst()
-                .get();
+                .findFirst().orElse(null);
     }
 }

@@ -7,12 +7,7 @@ import java.util.List;
 /**
  * Created by vladimir on 20.03.2018.
  */
-public interface TicketService {
-    Ticket save(Ticket ticket) throws IllegalArgumentException;
-
-    void delete(int id);
-
-    List<Ticket> getAll();
+public interface TicketService extends AbstractService<Ticket> {
 
     List<Ticket> getAllActive();
 

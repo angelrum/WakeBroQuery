@@ -11,9 +11,9 @@ import java.util.*;
  * Информация о пользователе
  */
 @NamedQueries({
-        @NamedQuery(name = User.BY_LOGIN,   query = "SELECT u FROM User u INNER JOIN FETCH u.roles WHERE u.login =:login"),
+        @NamedQuery(name = User.BY_LOGIN,   query = "SELECT u FROM User u WHERE u.login =:login and u.enabled = true"),
         @NamedQuery(name = User.DELETE,     query = "DELETE FROM User u WHERE u.id=:id"),
-        @NamedQuery(name = User.GET_ALL,    query = "SELECT u FROM User u INNER JOIN FETCH u.roles ORDER BY u.login ASC")
+        @NamedQuery(name = User.GET_ALL,    query = "SELECT u FROM User u ORDER BY u.login ASC")
 })
 @Entity
 @Table(name = "user")
@@ -31,10 +31,8 @@ public class User extends AbstractNamedEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private Role role;
 
     @Column(name = "email")
     @Email
@@ -43,19 +41,19 @@ public class User extends AbstractNamedEntity {
     @Column(name = "enabled")
     private boolean enabled = true;
 
-    public User(String firstname, String lastname, String secondname, String login, String password, String email, Role role, Role... roles) {
-        super(firstname, lastname, secondname);
+    public User(String firstname, String lastname, String secondname, String telnumber, String login, String password, String email, Role role) {
+        super(firstname, lastname, secondname, telnumber);
         this.login = login;
         this.password = password;
         this.email = email;
-        this.roles = EnumSet.of(role, roles);
+        this.role = role;
     }
 
-    public User(Integer id, LocalDateTime creation, String firstname, String lastname, String secondname, String login, String password, String email, Set<Role> roles) {
-        super(id, firstname, lastname, secondname, creation);
+    public User(Integer id, LocalDateTime creation, String firstname, String lastname, String secondname, String telnumber, String login, String password, String email, Role role) {
+        super(id, firstname, lastname, secondname, creation, telnumber);
         this.login = login;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
         this.email = email;
     }
 
@@ -68,10 +66,6 @@ public class User extends AbstractNamedEntity {
 
     public String getPassword() {
         return password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
     }
 
     public String getEmail() {
@@ -90,8 +84,12 @@ public class User extends AbstractNamedEntity {
         this.password = password;
     }
 
-    public void setRoles(Set<Role> role) {
-        this.roles = role;
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setEmail(String email) {
@@ -107,7 +105,7 @@ public class User extends AbstractNamedEntity {
         return "User{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", role=" + roles +
+                ", role=" + role +
                 ", email='" + email + '\'' +
                 ", enabled=" + enabled +
                 '}';
@@ -120,7 +118,7 @@ public class User extends AbstractNamedEntity {
         if (enabled != user.enabled) return false;
         if (login != null ? !login.equals(user.login) : user.login != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (roles != null ? !roles.equals(user.roles) : user.roles != null) return false;
+        if (role != null ? !role.equals(user.role) : user.role != null) return false;
         return email != null ? email.equals(user.email) : user.email == null;
     }
 
@@ -128,7 +126,7 @@ public class User extends AbstractNamedEntity {
     public int hashCode() {
         int result = login != null ? login.hashCode() : 0;
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (roles != null ? roles.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (enabled ? 1 : 0);
         return result;

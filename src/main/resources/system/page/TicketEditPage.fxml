@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?scenebuilder-stylesheet style/TableViewStyle.css?>
 
-<BorderPane prefHeight="500.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.TicketEditPage.TicketEditPageController">
+<BorderPane prefHeight="500.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.TicketEditPage.TicketEditPageController">
    <center>
       <TableView fx:id="ticketView" editable="true" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn fx:id="passColumn" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" styleClass="column" text="Тип билета" />
+            <TableColumn fx:id="passColumn" maxWidth="130.0" minWidth="130.0" prefWidth="130.0" styleClass="column" text="Тип билета" style="-fx-font-family: 'Helvetica Neue'" />
             <TableColumn fx:id="nameColumn" prefWidth="121.0" styleClass="column" text="Название" />
             <TableColumn fx:id="enableColumn" maxWidth="80.0" minWidth="80.0" styleClass="column" text="Активность" />
             <TableColumn fx:id="equipmentColumn" maxWidth="80.0" minWidth="80.0" styleClass="column" text="Снаряжение" />

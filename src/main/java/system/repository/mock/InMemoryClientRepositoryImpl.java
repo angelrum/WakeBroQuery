@@ -5,7 +5,6 @@ import system.controller.AuthorizedUser;
 import system.model.Client;
 import system.repository.ClientRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,6 @@ public class InMemoryClientRepositoryImpl implements ClientRepository {
     private Map<Integer, Client> clients = new HashMap<>();
     private int id = 1;
 
-    @PostConstruct
     public void init() {
         List<Client> list = Arrays.asList(
                 //new Client("Иван", "Иванов", "Иванович", "+7(911)111-11-11", "Анапа", AuthorizedUser.id()),
@@ -56,7 +54,6 @@ public class InMemoryClientRepositoryImpl implements ClientRepository {
         return clients.values()
                 .stream()
                 .filter(client -> number.equals(client.getTelnumber()))
-                .findFirst()
-                .get();
+                .findFirst().orElse(null);
     }
 }

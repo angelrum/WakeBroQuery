@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="hsqldb" uuid="0ac8594c-019c-4b63-9b67-8ba0942849f1">
+    <data-source source="LOCAL" name="db" uuid="1b3802d9-e023-4e20-845c-e596f74e17b0">
       <driver-ref>hsqldb.local</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.hsqldb.jdbc.JDBCDriver</jdbc-driver>
-      <jdbc-url>jdbc:hsqldb:file:$PROJECT_DIR$/../hsqldb/wake_bro_db</jdbc-url>
+      <jdbc-url>jdbc:hsqldb:file:$PROJECT_DIR$/db/wake_bro_db</jdbc-url>
     </data-source>
   </component>
 </project>

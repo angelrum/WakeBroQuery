@@ -1,10 +1,6 @@
 package system.controller.page.TicketEditPage;
 
-import com.jfoenix.controls.JFXTreeTableColumn;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
@@ -13,9 +9,7 @@ import system.controller.page.listener.ActiveListener;
 import system.controller.page.listener.Command;
 import system.controller.page.listener.Controller;
 import system.model.Client;
-import system.model.Pass;
 import system.model.Ticket;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 

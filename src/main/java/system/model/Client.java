@@ -14,9 +14,9 @@ import java.util.List;
  * @id является идентификатором клиента
  */
 @NamedQueries({
-        @NamedQuery(name = Client.DELETE, query = "DELETE FROM Client c WHERE c.id=:id"),
-        @NamedQuery(name = Client.GET_ALL, query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets ORDER BY c.create"),
-        @NamedQuery(name = Client.GET_BY_NUMBER, query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets WHERE c.telnumber=:telnumber")
+        @NamedQuery(name = Client.DELETE,           query = "DELETE FROM Client c WHERE c.id=:id"),
+        @NamedQuery(name = Client.GET_ALL,          query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets ORDER BY c.create"),
+        @NamedQuery(name = Client.GET_BY_NUMBER,    query = "SELECT distinct c FROM Client c INNER JOIN FETCH c.user LEFT JOIN FETCH c.tickets WHERE c.telnumber=:telnumber")
 })
 
 @Entity
@@ -26,10 +26,6 @@ public class Client extends AbstractNamedEntity {
     public final static String DELETE = "Client.delete";
     public final static String GET_ALL = "Client.all";
     public final static String GET_BY_NUMBER = "Client.by_number";
-
-    @Column(name = "telnumber")
-    @NotBlank
-    private String telnumber;
 
     @Column(name = "city")
     @NotBlank
@@ -44,15 +40,13 @@ public class Client extends AbstractNamedEntity {
     private List<ClientTicket> tickets;
 
     public Client(String firstname, String lastname, String secondname, String telnumber, String city, User user) {
-        super(firstname, lastname, secondname);
-        this.telnumber  = telnumber;
+        super(firstname, lastname, secondname, telnumber);
         this.city       = city;
         this.user       = user;
     }
 
     public Client(Integer id, LocalDateTime creation, String firstname, String lastname, String secondname, String telnumber, String city, User user) {
-        super(id, firstname, lastname, secondname, creation);
-        this.telnumber  = telnumber;
+        super(id, firstname, lastname, secondname, creation, telnumber);
         this.city       = city;
         this.user       = user;
     }
@@ -68,16 +62,8 @@ public class Client extends AbstractNamedEntity {
         this.user = user;
     }
 
-    public String getTelnumber() {
-        return telnumber;
-    }
-
     public String getCity() {
         return city;
-    }
-
-    public void setTelnumber(String telnumber) {
-        this.telnumber = telnumber;
     }
 
     public void setCity(String city) {
@@ -98,7 +84,6 @@ public class Client extends AbstractNamedEntity {
                 "fname = " + getFirstname() + '\'' +
                 "lname = " + getLastname() + '\'' +
                 "sname = " + getSecondname() + '\'' +
-                "telnumber='" + telnumber + '\'' +
                 ", city='" + city + '\'' +
                 ", user=" + user +
                 ", tickets=" + tickets +

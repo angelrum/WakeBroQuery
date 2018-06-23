@@ -5,21 +5,29 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.3.xsd
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-    <context:property-placeholder location="db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
+    <context:property-placeholder location="system/db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
 
     <context:component-scan base-package="system.**.repository.jpa"/>
 
     <!--Инициализация БД при старте приложения
         https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#jdbc-initializing-datasource-xml
-    -->
-    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
+            <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
         <jdbc:script location="classpath:db/${jdbc.initLocation}"/>
         <jdbc:script encoding="utf-8" location="classpath:db/${jdbc.populateLocation}"/>
+    </jdbc:initialize-database>
+    -->
+    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
+        <jdbc:script location="classpath:system/db/${jdbc.initLocation}"/>
+        <jdbc:script encoding="utf-8" location="classpath:system/db/${jdbc.populateLocation}"/>
     </jdbc:initialize-database>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"

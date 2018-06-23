@@ -6,5 +6,6 @@ package system.controller.page.listener;
 public enum Command {
     CANCEL_DISABLE,
     CANCEL_ENABLE,
-    REFRESH;
+    REFRESH,
+    START
 }

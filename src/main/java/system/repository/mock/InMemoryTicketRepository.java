@@ -5,7 +5,6 @@ import system.model.Pass;
 import system.model.Ticket;
 import system.repository.TicketRepository;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ public class InMemoryTicketRepository implements TicketRepository {
     private Map<Integer, Ticket> tickets = new HashMap<>();
     private int id = 0;
 
-    @PostConstruct
     public void init() {
         List<Ticket> list = Arrays.asList(
                 //new Ticket(1, Pass.ABN_PASS, "Абонемент(Утренний)", true, LocalTime.of(9, 0), LocalTime.of(12, 0), LocalDate.now().getYear(), 1, 100, 200),

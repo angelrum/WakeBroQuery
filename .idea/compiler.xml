@@ -19,7 +19,7 @@
         <module name="WakeBroQuery" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8">
       <module name="WakeBroQuery" target="1.8" />
     </bytecodeTargetLevel>
   </component>

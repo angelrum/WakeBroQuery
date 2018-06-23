@@ -34,13 +34,13 @@ public class ClientTicketServiceImpl implements ClientTicketService {
 
     @Override
     public List<ClientTicket> getAllTicket(int clientId) throws NotFoundException {
-        return checkNullOrEmptyList(repository.getAll(clientId));
+        return repository.getAll(clientId);
     }
 
     @Override
     public List<ClientTicket> getAllActiveTicket(int clientId) throws NotFoundException {
         LocalDate date = LocalDate.now();
-        return checkNullOrEmptyList(repository.getActive(clientId, date));
+        return repository.getActive(clientId, date);
     }
 
     @Override

@@ -52,7 +52,7 @@ public class UserServiceTest extends ServiceTest {
     @Test
     public void role() {
         User user = service.getByLogin(ADMIN.getLogin());
-        assertMatch(user.getRoles(), Role.ADMIN);
+        assertMatchIgnorFields(user.getRole(), Role.ADMIN);
     }
 
 }

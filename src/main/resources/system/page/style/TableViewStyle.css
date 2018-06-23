@@ -13,6 +13,7 @@
     -fx-font-family: 'Helvetica Neue';
     -fx-text-alignment: center;
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }
 
 .column.table-cell {
@@ -20,7 +21,7 @@
 }
 
 .icon {
-    -fx-font-family: FontAwesome;-fx-fill:#e25050; -fx-font-size:1.5em;
+    -fx-font-family: FontAwesome;-fx-fill:#e25050; -fx-font-size: 1.5em;
 }
 
 .jfx-text-field {
@@ -47,7 +48,7 @@
     -fx-font-family: 'Helvetica Neue';
     -fx-font-size: 14px;
 }
-.tree-table-view .tree-table-cell:nth-child(even) {
+.tree-table-view .tree-table-cell:even {
     -fx-background-color: #f7f7f7;
 
 }

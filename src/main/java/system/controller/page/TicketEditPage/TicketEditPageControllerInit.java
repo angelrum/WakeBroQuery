@@ -1,24 +1,16 @@
 package system.controller.page.TicketEditPage;
 
-import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.StackPane;
-import org.springframework.util.StringUtils;
 import system.controller.SpringContextUtil;
-import system.controller.page.helper.*;
 import system.controller.page.helper.TableCell.*;
+import system.controller.page.helper.converter.DoubleConverter;
 import system.model.Pass;
 import system.model.Ticket;
 import system.service.TicketService;
-import system.view.FactoryPage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,6 +19,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import static system.util.ValidationUtil.*;
+import static system.controller.page.helper.FontAwesomeIconHelper.*;
+import static system.controller.page.helper.TableHelper.*;
 
 /**
  * Created by vladimir on 02.05.2018.
@@ -73,7 +67,7 @@ public class TicketEditPageControllerInit {
         controller.monthColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Integer>("month"));
         controller.costColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Double>("cost"));
         controller.weekcostColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Double>("weekendcost"));
-        controller.delete.setCellValueFactory(param -> new SimpleObjectProperty<StackPane>(getButtonDelete(param.getValue())));
+        controller.delete.setCellValueFactory(param -> new SimpleObjectProperty<StackPane>(getButtonDelete(param.getValue(), bufferDel, controller.ticketView)));
         initEdit();
         initEvent();
     }
@@ -84,7 +78,7 @@ public class TicketEditPageControllerInit {
         ObservableList<Ticket> tickets = FXCollections.observableArrayList(service.getAll());
 
         controller.passColumn.setCellFactory(param -> new ComboBoxCell<Ticket, String>(bufferUpd, passes, "pass"));
-        controller.nameColumn.setCellFactory((TextFieldTableCell.forTableColumn()));
+        //controller.nameColumn.setCellFactory((TextFieldTableCell.forTableColumn()));
         controller.nameColumn.setCellFactory(param -> new TextFieldCell<Ticket, String>(bufferUpd, null, "name"));
         controller.enableColumn.setCellFactory(param -> new CheckBoxCell<Ticket>(bufferUpd, null, "enable"));
         controller.equipmentColumn.setCellFactory(param -> new CheckBoxCell<Ticket>(bufferUpd, null, "equipment"));
@@ -100,41 +94,43 @@ public class TicketEditPageControllerInit {
     }
 
     private void initEvent() {
-        controller.nameColumn.setOnEditCommit(event -> getEditTicket(event).setName(event.getNewValue()));
-        controller.costColumn.setOnEditCommit(event -> getEditTicket(event).setCost(event.getNewValue()));
-        controller.weekcostColumn.setOnEditCommit(event -> getEditTicket(event).setWeekendcost(event.getNewValue()));
+        controller.nameColumn.setOnEditCommit(event -> getEditObject(event, bufferUpd).setName(event.getNewValue()));
+        controller.costColumn.setOnEditCommit(event -> getEditObject(event, bufferUpd).setCost(event.getNewValue()));
+        controller.weekcostColumn.setOnEditCommit(event -> getEditObject(event, bufferUpd).setWeekendcost(event.getNewValue()));
         controller.ticketView.setOnMouseClicked(event -> controller.ticketView.getSelectionModel().clearSelection());
     }
 
-    private <T> Ticket getEditTicket(TableColumn.CellEditEvent<Ticket, T> event) {
-        TablePosition<Ticket, T> pos = event.getTablePosition();
-        Ticket ticket = pos.getTableView().getItems().get(pos.getRow());
-        bufferUpd.add(ticket);
-        return ticket;
-    }
+    //перенес в TableHelper
+//    private <T> Ticket getEditTicket(TableColumn.CellEditEvent<Ticket, T> event) {
+//        TablePosition<Ticket, T> pos = event.getTablePosition();
+//        Ticket ticket = pos.getTableView().getItems().get(pos.getRow());
+//        bufferUpd.add(ticket);
+//        return ticket;
+//    }
 
     public void save() {
         String err = getError();
-        if (StringUtils.hasLength(err)) {
-            FactoryPage.getInstance().showAlert(err, controller.stage);
-        } else {
-            try {
-                saveTicket();
-                controller.stage.close();
-            } catch (IllegalArgumentException e) {
-                FactoryPage.getInstance().showAlert("Ошибка при сохранение данных", controller.stage);
-            }
-        }
+        saveObjects(bufferUpd, bufferDel, service, controller.stage, err);
+//        if (StringUtils.hasLength(err)) {
+//            FactoryPage.getInstance().showAlert(err, controller.stage);
+//        } else {
+//            try {
+//                saveObject(bufferUpd, bufferDel, service);
+//                controller.stage.close();
+//            } catch (IllegalArgumentException e) {
+//                FactoryPage.getInstance().showAlert("Ошибка при сохранение данных", controller.stage);
+//            }
+//        }
     }
 
-    private StackPane getButtonDelete(Ticket ticket) {
-        FontAwesomeIconView icon = FontAwesomeIconHelper.getIconView(FontAwesomeIcon.TRASH_ALT);
-        icon.setOnMouseClicked(event -> {
-            bufferDel.add(ticket);
-            controller.ticketView.getItems().remove(ticket);
-        });
-        return FontAwesomeIconHelper.getPane(icon);
-    }
+//    private StackPane getButtonDelete(Ticket ticket) {
+//        FontAwesomeIconView icon = FontAwesomeIconHelper.getIconView(FontAwesomeIcon.TRASH_ALT);
+//        icon.setOnMouseClicked(event -> {
+//            bufferDel.add(ticket);
+//            controller.ticketView.getItems().remove(ticket);
+//        });
+//        return FontAwesomeIconHelper.getPane(icon);
+//    }
 
     private String getError() {
         bufferUpd.removeAll(bufferDel);
@@ -147,19 +143,20 @@ public class TicketEditPageControllerInit {
         return err.toString();
     }
 
-    private void saveTicket() throws IllegalArgumentException {
-        for (Ticket ticket : bufferUpd)
-            service.save(ticket);
-        for (Ticket ticket : bufferDel) {
-            if (!ticket.isNew())
-                service.delete(ticket.getId());
-        }
-    }
+//    private void saveTicket() throws IllegalArgumentException {
+//        for (Ticket ticket : bufferUpd)
+//            service.save(ticket);
+//        for (Ticket ticket : bufferDel) {
+//            if (!ticket.isNew())
+//                service.delete(ticket.getId());
+//        }
+//    }
 
     public void create() {
-        Ticket ticket = new Ticket();
-        controller.ticketView.getItems().add(ticket);
-        controller.ticketView.refresh();
+        createObject(controller.ticketView, new Ticket());
+//        Ticket ticket = new Ticket();
+//        controller.ticketView.getItems().add(ticket);
+//        controller.ticketView.refresh();
     }
 
     public void cancel() {

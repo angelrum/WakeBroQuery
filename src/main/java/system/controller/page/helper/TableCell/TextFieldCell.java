@@ -48,7 +48,8 @@ public class TextFieldCell <S, T>  extends AbstractBaseTableCell<S, T> {
     }
 
     private void saveChangedValue() {
-        if (!getText().equals(textField.getText())) {
+        if (getText()==null ||
+                !getText().equals(textField.getText())) {
             T t = getConverter().fromString(textField.getText());
             int index = getIndex();
             S s = getTableView().getItems().get(index);

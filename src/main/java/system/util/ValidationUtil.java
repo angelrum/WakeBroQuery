@@ -6,6 +6,7 @@ import system.MainApp;
 import system.model.AbstractBaseEntity;
 import system.model.Client;
 import system.model.Ticket;
+import system.model.User;
 import system.service.exception.NotFoundException;
 
 import java.io.InputStream;
@@ -99,6 +100,21 @@ public class ValidationUtil {
 
         return builder.toString();
     }
+
+    public static String checkUser(User user, int pos) {
+        StringBuilder builder = new StringBuilder();
+        Properties err = getProperties(ERROR_PROP);
+        checkNotNull(err);
+        if (checkNoText(user.getLogin()))               insertErText(err, pos, "user.err.login", builder);
+        if (checkNoText(user.getPassword()))            insertErText(err, pos, "user.err.password", builder);
+        if (checkNoText(user.getFirstname()))           insertErText(err, pos, "user.err.fname", builder);
+        if (checkNoText(user.getSecondname()))          insertErText(err, pos, "user.err.sname", builder);
+        if (checkNoText(user.getLastname()))            insertErText(err, pos, "user.err.lname", builder);
+        if (checkNoText(user.getTelnumber()))           insertErText(err, pos, "user.err.telnumber", builder);
+        else if(!checkTelNumber(user.getTelnumber()))   insertErText(err, pos, "user.err.telnumber_exist", builder);
+
+        return builder.toString();
+    }
     
     public static String checkClient(Client client, int pos) {
         StringBuilder builder = new StringBuilder();
@@ -110,7 +126,7 @@ public class ValidationUtil {
         if (checkNoText(client.getSecondname()))        insertErText(err, pos, "client.err.sname", builder);
         if (checkNoText(client.getCity()))              insertErText(err, pos, "client.err.city", builder);
         if (checkNoText(client.getTelnumber()))         insertErText(err, pos, "client.err.telnumber", builder);
-        else if (!checkTelNumber(client.getTelnumber())) insertErText(err, pos, "client.err.telnumber_exist", builder);
+        else if (!checkTelNumber(client.getTelnumber()))insertErText(err, pos, "client.err.telnumber_exist", builder);
         
         return builder.toString();
     }

@@ -4,9 +4,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import system.model.Pass;
+import system.model.Role;
 import system.model.Ticket;
 
 import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,7 +18,7 @@ public abstract class AbstractBaseTableCell <S, T> extends TableCell<S, T> {
     protected Set<S> upd;
     private String field;
 
-    public AbstractBaseTableCell(Set<S> upd, ObservableList<T> values, String field) {
+    AbstractBaseTableCell(Set<S> upd, ObservableList<T> values, String field) {
         super();
         this.upd = upd;
         this.field = field;
@@ -40,11 +42,19 @@ public abstract class AbstractBaseTableCell <S, T> extends TableCell<S, T> {
     protected void setValue(S s, T t) {
         try {
             Class clazz = s.getClass();
-            Field field = clazz.getDeclaredField(this.field);
+            Field field;
+            try {
+                field = clazz.getDeclaredField(this.field);
+            } catch (NoSuchFieldException e) {
+                field = clazz.getSuperclass().getDeclaredField(this.field);
+            }
             field.setAccessible(true);
             if (field.getType()
                     .isAssignableFrom(Pass.class)) {
                 field.set(s, Pass.getPassByName(t.toString()));
+            }else if(field.getType()
+                    .isAssignableFrom(Role.class)) {
+                field.set(s, Role.getRoleByName(t.toString()));
             } else
                 field.set(s, t);
         } catch (NoSuchFieldException | IllegalAccessException e) {

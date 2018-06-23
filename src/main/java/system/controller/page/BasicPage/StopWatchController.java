@@ -9,6 +9,7 @@ package system.controller.page.BasicPage;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import system.controller.Queue;
+import system.view.FactoryPage;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class StopWatchController implements Closeable {
 
     private Timer timer = new Timer(60 * TICKET_DURATION);
 
-    public StopWatchController(BasicPageController controller) {
+    StopWatchController(BasicPageController controller) {
         this.controller = controller;
     }
 
@@ -46,19 +47,19 @@ public class StopWatchController implements Closeable {
 
     private void initStop() {
         controller.stop.getStyleClass().add("play-button");
-        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.STOP_CIRCLE);
+        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.STOP_CIRCLE, "3em");
         icon.getStyleClass().add("stop-time");
         controller.stop.setGraphic(icon);
     }
 
     private void initPlay() {
-        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.PLAY_CIRCLE);
+        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.PLAY_CIRCLE, "3em");
         icon.getStyleClass().add("play-time");
         controller.play.setGraphic(getPane(icon));
     }
 
     private void initPause() {
-        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.PAUSE_CIRCLE);
+        FontAwesomeIconView icon = getIconView(FontAwesomeIcon.PAUSE_CIRCLE, "3em");
         icon.getStyleClass().add("pause-time");
         controller.play.setGraphic(getPane(icon));
     }
@@ -113,6 +114,7 @@ public class StopWatchController implements Closeable {
         private volatile boolean active = true;
 
         Timer(long max) {
+            super(FactoryPage.getInstance().getThreadGroup(), "Thread=Timer");
             this.max = max;
         }
 
@@ -140,7 +142,7 @@ public class StopWatchController implements Closeable {
                         }
                         Thread.currentThread().sleep(999);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        return;
                     }
                 }
             }
@@ -154,7 +156,7 @@ public class StopWatchController implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (timer.isAlive())
             timer.interrupt();
     }

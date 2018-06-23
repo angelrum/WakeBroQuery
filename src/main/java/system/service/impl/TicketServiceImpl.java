@@ -37,7 +37,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getAll() {
-        return checkNullOrEmptyList(repository.getAll());
+        //return checkNullOrEmptyList(repository.getAll());
+        return repository.getAll();
     }
 
     public List<Ticket> getAllActive() {
@@ -45,7 +46,8 @@ public class TicketServiceImpl implements TicketService {
 //        return list.stream()
 //                .filter(ticket -> ticket.isEnable())
 //                .collect(Collectors.toList());
-        return checkNullOrEmptyList(repository.getAllActive());
+        //return checkNullOrEmptyList(repository.getAllActive());
+        return repository.getAllActive();
     }
 
     public Ticket get(int ticketId) {

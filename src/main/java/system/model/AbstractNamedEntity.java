@@ -9,6 +9,10 @@ import java.time.LocalDateTime;
  * Created by vladimir on 17.03.2018.
  * Идентификато, дата создания и данные пользователя/клиента
  *
+ * @firstname - Имя
+ * @lastname - Фамилия
+ * @secondname - Отчество
+ *
  */
 @MappedSuperclass
 public abstract class AbstractNamedEntity extends AbstractDateEntity {
@@ -25,15 +29,20 @@ public abstract class AbstractNamedEntity extends AbstractDateEntity {
     @NotBlank
     private String secondname;
 
-    public AbstractNamedEntity(String firstname, String lastname, String secondname) {
-        this(null, firstname, lastname, secondname, LocalDateTime.now());
+    @Column(name = "telnumber")
+    @NotBlank
+    private String telnumber;
+
+    AbstractNamedEntity(String firstname, String lastname, String secondname, String telnumber) {
+        this(null, firstname, lastname, secondname, LocalDateTime.now(), telnumber);
     }
 
-    public AbstractNamedEntity(Integer id, String firstname, String lastname, String secondname, LocalDateTime creation) {
+    AbstractNamedEntity(Integer id, String firstname, String lastname, String secondname, LocalDateTime creation, String telnumber) {
         super(id, creation);
         this.firstname = firstname;
         this.lastname = lastname;
         this.secondname = secondname;
+        this.telnumber = telnumber;
     }
 
     public AbstractNamedEntity() {
@@ -61,5 +70,13 @@ public abstract class AbstractNamedEntity extends AbstractDateEntity {
 
     public void setSecondname(String secondname) {
         this.secondname = secondname;
+    }
+
+    public String getTelnumber() {
+        return telnumber;
+    }
+
+    public void setTelnumber(String telnumber) {
+        this.telnumber = telnumber;
     }
 }

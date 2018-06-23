@@ -91,6 +91,7 @@ public class BasicPageController implements Controller {
     public ActiveListener getControllerActive() {
         return controllerActive;
     }
+
     @Override
     public void setStage(Stage stage) {
 
@@ -118,6 +119,7 @@ public class BasicPageController implements Controller {
             case REFRESH:
                 refresh();
         }
-
     }
+
+
 }

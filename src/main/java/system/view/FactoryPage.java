@@ -6,11 +6,14 @@ import com.jfoenix.controls.JFXDialogLayout;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import system.MainApp;
+import system.controller.AuthorizedUser;
 import system.controller.page.BasicPage.BasicPageController;
+import system.controller.page.listener.Command;
 import system.controller.page.listener.Controller;
 import system.controller.page.listener.ActiveListener;
 
@@ -22,6 +25,7 @@ import java.net.URL;
  */
 public class FactoryPage {
     private final static URL START = MainApp.class.getResource("page/BasicPage.fxml");
+    private ThreadGroup threadGroup = new ThreadGroup("basic_thread_group");
 
     private ActiveListener basic;
     private Stage basicStage;
@@ -45,6 +49,7 @@ public class FactoryPage {
                 showBasicPage();
                 break;
             case LOGIN_PAGE:
+                createLoginPage(pageEnum);
                 break;
             default:createPage(pageEnum);
         }
@@ -72,6 +77,23 @@ public class FactoryPage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createLoginPage(PageEnum page) {
+        try {
+            FXMLLoader loader = new FXMLLoader(page.getUrl());
+            AnchorPane pane = loader.load();
+            Controller controller = loader.getController();
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setScene(new Scene(pane));
+            controller.setStage(stage);
+            stage.show();
+            controller.execute(Command.START);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void showBasicPage() {
@@ -116,15 +138,27 @@ public class FactoryPage {
         MenuItem controlItem = new MenuItem("Управление билетами");
         controlItem.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.TICKET_EDIT));
 
-        MenuItem item = new MenuItem("Управление клиентами");
-        item.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.CLIENT_EDIT));
+        MenuItem item1 = new MenuItem("Управление клиентами");
+        item1.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.CLIENT_EDIT));
 
-        control.getItems().addAll(controlItem, item);
+        MenuItem item2 = new MenuItem("Управление пользователями");
+        item2.setOnAction(event -> FactoryPage.getInstance().showPage(PageEnum.USER_EDIT));
+
+        control.getItems().addAll(controlItem, item1, item2);
         menuBar.getMenus().addAll(control);
 
         final String os = System.getProperty ("os.name");
         if (os != null && os.startsWith ("Mac"))
             menuBar.useSystemMenuBarProperty ().set (true);
         return menuBar;
+    }
+
+    public ThreadGroup getThreadGroup() {
+        return threadGroup;
+    }
+
+    public void close() {
+        AuthorizedUser.closeSession();
+        threadGroup.interrupt();
     }
 }
