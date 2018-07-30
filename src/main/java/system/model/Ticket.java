@@ -14,6 +14,7 @@ import static system.util.TicketUtil.*;
  *      @equipment           включено ли снаряжение
  *      @datestart/dateend   относиться к интервалу действия абонемента, как временной период (например летний сезон с 05.2018 до 09.2018)
  *      @month               задаем длительность абонемента в месяцах
+ *      @day                 задаем длительность абонемента в днях
  *      @timestart/@timeend  относиться к временному интервалу действия билета, например утренний, с 09:00 до 12:00
  *      @duration            длительность сета, по умолчанию 5 минут
  *      @year                год действия абонемента или сета
@@ -24,19 +25,22 @@ import static system.util.TicketUtil.*;
  *      @id                  ид. записи
  *
  * Логика:
- * 1. Есть три поля, описывающие длительность действия билета: @start, @end и @month.
- *    1.1 Если все поля равны @datestart/@dateend = @month == null, значит абонемент длительностью в один день;
+ * 1. Есть четыре поля, описывающие длительность действия билета: @start, @end, @month и @day.
+ *    1.1 Если все поля равны @datestart/@dateend = @month = @day == null, значит абонемент длительностью в один день;
  *    1.2 Если заполнены поля @datestart и @dateend значит билет действует ограниченный период дат;
  *    1.3 Если поля @datestart/dateend пусты, но заполнено поле @month значит билет действует указанное кол-во месяцев
- *                                                                                           с момента добавления
+ *                                                                                           с момента добавления;
+ *    1.4 Если поля @datestart/dateend и @month пусты, но заполнено поле @day, значит билет действует указанное кол-во дней.
  */
 @Entity
 @Table(name = "ticket",
         uniqueConstraints = @UniqueConstraint(columnNames = {"pass", "name", "year"}, name = "ticket_unique_index"))
-@NamedQueries({
+@NamedQueries(value = {
         @NamedQuery(name = Ticket.DELETE, query = "DELETE FROM Ticket t WHERE t.id=:id"),
         @NamedQuery(name = Ticket.GET_ALL, query = "SELECT t FROM Ticket t ORDER BY t.pass, t.name, t.equipment"),
-        @NamedQuery(name = Ticket.GET_ALL_ACTIVE, query = "SELECT t FROM Ticket t WHERE t.enable = true ORDER BY t.pass, t.name, t.equipment")
+        @NamedQuery(name = Ticket.GET_ALL_ACTIVE, query = "SELECT t FROM Ticket t WHERE t.enable = true " +
+                                                                "AND ((t.startDate <=:date AND t.endDate >=:date) OR (t.startDate IS NULL AND t.endDate IS NULL)) " +
+                                                            "ORDER BY t.pass, t.name, t.equipment")
 })
 public class Ticket extends AbstractDateEntity {
     public static final String DELETE = "Ticket.delete";
@@ -84,29 +88,32 @@ public class Ticket extends AbstractDateEntity {
     @Column(name = "month")
     private Integer month = 0;
 
+    @Column(name = "day")
+    private Integer day = 0;
+
     @Column(name = "cost")
     @Min(0)
-    private Double cost;
+    private Double cost = 0.0;
 
     @Column(name = "weekendcost")
     @Min(0)
-    private Double weekendcost;
+    private Double weekendcost = 0.0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
-    public Ticket(Pass pass, String name, boolean equipment, LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Integer year, Integer month, Double cost, Double weekendcost, User user) {
+    public Ticket(Pass pass, String name, boolean equipment, LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, Integer year, Integer month, Integer day, Double cost, Double weekendcost, User user) {
         this.pass = pass;
         this.name = name;
         this.equipment = equipment;
-        //this.duration = TICKET_DURATION;
         this.startTime = startTime;
         this.endTime = endTime;
         this.startDate = startDate;
         this.endDate = endDate;
         this.year = year;
         this.month = month;
+        this.day = day;
         this.cost = cost;
         this.weekendcost = weekendcost;
         this.user = user;
@@ -201,6 +208,14 @@ public class Ticket extends AbstractDateEntity {
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
     }
 
     public Double getCost() {

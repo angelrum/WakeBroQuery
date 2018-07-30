@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import system.MainApp;
 import system.controller.AuthorizedUser;
+import system.controller.Queue;
 import system.controller.page.BasicPage.BasicPageController;
 import system.controller.page.listener.Command;
 import system.controller.page.listener.Controller;
@@ -19,6 +20,8 @@ import system.controller.page.listener.ActiveListener;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by vladimir on 18.02.2018.
@@ -28,7 +31,10 @@ public class FactoryPage {
     private ThreadGroup threadGroup = new ThreadGroup("basic_thread_group");
 
     private ActiveListener basic;
+
     private Stage basicStage;
+
+    private List<Stage> stages = new ArrayList<>();
 
     private static FactoryPage ourInstance = new FactoryPage();
 
@@ -50,6 +56,9 @@ public class FactoryPage {
                 break;
             case LOGIN_PAGE:
                 createLoginPage(pageEnum);
+                break;
+            case SCREEN_PAGE:
+                createScreenPage(pageEnum);
                 break;
             default:createPage(pageEnum);
         }
@@ -74,6 +83,25 @@ public class FactoryPage {
 
             stage.showAndWait();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createScreenPage(PageEnum page) {
+        try {
+            FXMLLoader loader = new FXMLLoader(page.getUrl());
+            SplitPane pane = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle(page.getName());
+            stage.initModality(Modality.NONE);
+            stage.setScene(new Scene(pane));
+            stage.setOnCloseRequest(event -> stages.remove(stage));
+            Controller controller = loader.getController();
+            controller.setStage(stage);
+            stages.add(stage);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -157,8 +185,27 @@ public class FactoryPage {
         return threadGroup;
     }
 
+    public boolean checkActiveThread() {
+        return threadGroup.activeCount() > 0;
+    }
+
+    public Thread getThreadByName(String name) {
+        Thread[] threads = new Thread[threadGroup.activeCount()];
+        if (threadGroup.enumerate(threads) > 0) {
+            for (Thread t : threads)
+                if (name.equals(t.getName()))
+                    return t;
+        }
+        return null;
+    }
+
     public void close() {
         AuthorizedUser.closeSession();
-        threadGroup.interrupt();
+        basicStage.close();
+        Queue.getInstance().clearStopWatchListener();
+        for (Stage stage : stages)
+            stage.close();
+        //createLoginPage(PageEnum.LOGIN_PAGE);
+        //threadGroup.interrupt();
     }
 }

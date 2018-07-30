@@ -5,16 +5,17 @@ package system.controller.page.BasicPage;
  *
  * Класс описывает работу секундомера и подсчет суммарного времени очереди
  */
-
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.application.Platform;
 import system.controller.Queue;
+import system.controller.page.listener.StopWatchListener;
 import system.view.FactoryPage;
 
 import java.io.Closeable;
-import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static system.util.TicketUtil.*;
 import static system.controller.page.helper.FontAwesomeIconHelper.*;
@@ -23,10 +24,18 @@ public class StopWatchController implements Closeable {
 
     private BasicPageController controller;
 
-    private Timer timer = new Timer(60 * TICKET_DURATION);
+    private static final String TIMER_THREAD_NAME = "Thread=Timer";
+
+    private List<StopWatchListener> listeners = new ArrayList<>();
+
+    private Timer timer;
 
     StopWatchController(BasicPageController controller) {
         this.controller = controller;
+        this.timer = (Timer) FactoryPage.getInstance().getThreadByName(TIMER_THREAD_NAME);
+        if(Objects.isNull(timer))
+            this.timer = new Timer(60 * TICKET_DURATION);
+        this.timer.setController(this);
     }
 
     /********      Init block      ********/
@@ -41,6 +50,7 @@ public class StopWatchController implements Closeable {
             else
                 clickPause();
         });
+        if (timer.isAlive()) initPause();
 
         controller.stop.setOnAction(event -> clickStop());
     }
@@ -64,6 +74,10 @@ public class StopWatchController implements Closeable {
         controller.play.setGraphic(getPane(icon));
     }
 
+    public void setListeners(StopWatchListener listener) {
+        this.listeners.add(listener);
+    }
+
     /********      End block      ********/
 
     private void clickPlay() {
@@ -83,7 +97,7 @@ public class StopWatchController implements Closeable {
     }
 
     private void clickStop() {
-        initPlay();
+        //initPlay();
         if (timer.onPause())
             endtime();
         if (timer.isAlive())
@@ -91,25 +105,21 @@ public class StopWatchController implements Closeable {
     }
 
     private void endtime() {
-        controller.play
-                .getStyleClass()
-                .remove("play-disactive");
-        controller.play
-                .getStyleClass()
-                .add("play-active");
+        //System.out.println("End time");
+        initPlay();
         Queue.getInstance()
                 .endReedeemTicket();//сообщить очереди, что необходимо списать билет
     }
 
+    //Рассылаем время через слушателей, объявленных в Queue
     private void insertTime(long time) {
-        LocalTime localTime = LocalTime.ofSecondOfDay(time);
-        controller.timer.setText(localTime.format(DateTimeFormatter.ofPattern("mm:ss")));
-        Queue.getInstance().updateTotalTime(time);
+        Queue.getInstance().updateTime(time);
     }
 
     private class Timer extends Thread {
         private final long max;
         private long value = 0;
+        private StopWatchController controller;
 
         private volatile boolean active = true;
 
@@ -135,10 +145,10 @@ public class StopWatchController implements Closeable {
                     try {
                         value+=1;
                         if (max + 1 > value) {
-                            insertTime(value);
+                            //http://qaru.site/questions/95989/platformrunlater-and-task-in-javafx
+                            Platform.runLater(()->this.controller.insertTime(value));
                         } else {
-                            reset();
-                            endtime();
+                            Platform.runLater(()->this.controller.clickStop());
                         }
                         Thread.currentThread().sleep(999);
                     } catch (InterruptedException e) {
@@ -151,7 +161,11 @@ public class StopWatchController implements Closeable {
         void reset() {
             value = 0;
             active = false;
-            insertTime(value);
+            Platform.runLater(()->this.controller.insertTime(value));
+        }
+
+        public void setController(StopWatchController controller) {
+            this.controller = controller;
         }
     }
 

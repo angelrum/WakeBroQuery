@@ -30,6 +30,7 @@ public class TicketEditPageControllerInit {
     private TicketEditPageController controller;
     private TicketService service = SpringContextUtil.getInstance().getBean(TicketService.class);
     private Integer[] months = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    private Integer[] days = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21};
 
     private Set<Ticket> bufferUpd = new HashSet<>();
     private Set<Ticket> bufferDel = new HashSet<>();
@@ -65,6 +66,7 @@ public class TicketEditPageControllerInit {
         controller.startTimeColumn.setCellValueFactory(new PropertyValueFactory<Ticket, LocalTime>("startTime"));
         controller.endTimeColumn.setCellValueFactory(new PropertyValueFactory<Ticket, LocalTime>("endTime"));
         controller.monthColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Integer>("month"));
+        controller.dayColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Integer>("day"));
         controller.costColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Double>("cost"));
         controller.weekcostColumn.setCellValueFactory(new PropertyValueFactory<Ticket, Double>("weekendcost"));
         controller.delete.setCellValueFactory(param -> new SimpleObjectProperty<StackPane>(getButtonDelete(param.getValue(), bufferDel, controller.ticketView)));
@@ -75,6 +77,7 @@ public class TicketEditPageControllerInit {
     private void initEdit() {
         ObservableList<String> passes = FXCollections.observableArrayList(Stream.of(Pass.values()).map(Pass::getName).collect(Collectors.toList()));
         ObservableList<Integer> month = FXCollections.observableArrayList(months);
+        ObservableList<Integer> day = FXCollections.observableArrayList(days);
         ObservableList<Ticket> tickets = FXCollections.observableArrayList(service.getAll());
 
         controller.passColumn.setCellFactory(param -> new ComboBoxCell<Ticket, String>(bufferUpd, passes, "pass"));
@@ -87,6 +90,7 @@ public class TicketEditPageControllerInit {
         controller.endDateColumn.setCellFactory(param -> new DatePickerCell<Ticket>(bufferUpd, "endDate"));
         controller.startTimeColumn.setCellFactory(param -> new TimePickerCell<Ticket>(bufferUpd, "startTime"));
         controller.endTimeColumn.setCellFactory(param -> new TimePickerCell<Ticket>(bufferUpd, "endTime"));
+        controller.dayColumn.setCellFactory(param -> new ComboBoxCell<Ticket, Integer>(bufferUpd, day, "day"));
         controller.monthColumn.setCellFactory(param -> new ComboBoxCell<Ticket, Integer>(bufferUpd, month, "month"));
         controller.costColumn.setCellFactory(param -> new TextFieldCell<Ticket, Double>(bufferUpd, null, "cost", new DoubleConverter()));
         controller.weekcostColumn.setCellFactory(param -> new TextFieldCell<Ticket, Double>(bufferUpd, null, "weekendcost", new DoubleConverter()));

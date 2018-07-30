@@ -1,7 +1,5 @@
 package system.controller.page.BasicPage;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import system.MainApp;
@@ -11,7 +9,6 @@ import system.controller.Queue;
  * Created by vladimir on 01.04.2018.
  */
 
-import static system.controller.page.helper.FontAwesomeIconHelper.*;
 public class BasicPageControllerInit {
     private BasicPageController controller;
 

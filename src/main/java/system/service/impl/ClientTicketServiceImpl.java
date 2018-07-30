@@ -54,6 +54,9 @@ public class ClientTicketServiceImpl implements ClientTicketService {
         } else if (ticket.getMonth() > 0) {
             start = LocalDate.now();
             end = LocalDate.now().plusMonths(ticket.getMonth());
+        } else if (ticket.getDay() > 0) {
+            start = LocalDate.now();
+            end = start.plusDays(ticket.getDay() - 1);
         } else
             start = end = LocalDate.now();
         ClientTicket clientTicket = new ClientTicket(ticket, start, end);

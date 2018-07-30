@@ -22,11 +22,7 @@
 
 <?import system.controller.page.helper.ButtonSubmit?>
 <?import system.controller.page.helper.NumberTextField?>
-<BorderPane centerShape="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0"
-            xmlns="http://javafx.com/javafx/9"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="system.controller.page.BasicPage.BasicPageController"
-            stylesheets="@style/BasicPage.css">
+<BorderPane centerShape="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" stylesheets="@style/BasicPage.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.BasicPage.BasicPageController">
    <left>
       <FlowPane maxWidth="400.0" minWidth="-Infinity" prefWidth="350.0" BorderPane.alignment="TOP_CENTER">
          <BorderPane.margin>
@@ -121,7 +117,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </VBox.margin>
                   </Button>
-                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="310.0" text="Окончить смену" textAlignment="CENTER">
+                  <Button maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#stopSession" prefWidth="310.0" text="Окончить смену" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </VBox.margin>
@@ -131,10 +127,6 @@
          </children>
       </FlowPane>
    </left>
-   <!--https://stackoverflow.com/questions/14696884/setting-stylesheets-declaratively-in-fxml-->
-   <stylesheets>
-      <URL value="@style/BasicPage.css" />
-   </stylesheets>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
@@ -148,8 +140,7 @@
                  <TableColumn fx:id="lStatusColumn" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" styleClass="lstatus" />
                  <TableColumn fx:id="cStatusColumn" editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" sortable="false" styleClass="cstatus" text="CheckBox" visible="false" />
                  <TableColumn fx:id="deleteColumn" editable="false" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" sortable="false" styleClass="trash" />
-                 <TableColumn fx:id="fioColumn" editable="false" minWidth="400.0" prefWidth="400.0" text="Очередь">
-           </TableColumn>
+                 <TableColumn fx:id="fioColumn" editable="false" minWidth="400.0" prefWidth="400.0" text="Очередь"/>
                  <TableColumn fx:id="abnColumn" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Кол-во &#10;сетов/абн." />
               </columns>
             </TableView>
@@ -173,6 +164,7 @@
                               <Font name="Helvetica Neue" size="48.0" />
                            </font>
                         </Text>
+                        <Button onAction="#clickScreen" mnemonicParsing="false" text="Вывести на экран" />
                      </children>
                      <opaqueInsets>
                         <Insets left="20.0" right="20.0" />
@@ -184,6 +176,7 @@
          </bottom>
       </BorderPane>
    </center>
+   <!--https://stackoverflow.com/questions/14696884/setting-stylesheets-declaratively-in-fxml-->
    <stylesheets>
       <URL value="@style/BasicPage.css" />
    </stylesheets>

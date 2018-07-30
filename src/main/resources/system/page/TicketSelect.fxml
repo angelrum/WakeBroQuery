@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" stylesheets="@style/ClientTicketListPage.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.TicketListPage.TicketListController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="900.0" stylesheets="@style/ClientTicketListPage.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="system.controller.page.TicketListPage.TicketListController">
    <center>
       <TableView fx:id="tableView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
@@ -21,6 +21,7 @@
                   <TableColumn fx:id="end" editable="false" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="по" />
                </columns>
             </TableColumn>
+            <TableColumn fx:id="day" editable="false" maxWidth="159.0" minWidth="110.0" prefWidth="110.0" text="Срок &#10;действия, дни." />
             <TableColumn fx:id="month" editable="false" maxWidth="159.0" minWidth="110.0" prefWidth="110.0" text="Срок &#10;действия, мес." />
             <TableColumn fx:id="duration" editable="false" maxWidth="171.0" minWidth="80.0" text="Длит.сета,&#10;мин." />
             <TableColumn fx:id="count" editable="false" maxWidth="120.0" minWidth="70.0" prefWidth="70.0" text="Кол-во" />

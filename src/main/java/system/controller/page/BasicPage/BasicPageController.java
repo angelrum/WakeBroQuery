@@ -1,18 +1,24 @@
 package system.controller.page.BasicPage;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import system.controller.AuthorizedUser;
+import system.controller.Queue;
 import system.controller.page.listener.ActiveListener;
 import system.controller.page.listener.Command;
 import system.controller.page.listener.Controller;
 import system.controller.page.helper.ButtonSubmit;
 import system.controller.page.helper.NumberTextField;
+import system.controller.page.listener.StopWatchListener;
 import system.controller.to.QueueRow;
 import system.model.Client;
+import system.view.FactoryPage;
+import system.view.PageEnum;
 
 /**
  * Created by vladimir on 01.04.2018.
@@ -58,6 +64,8 @@ public class BasicPageController implements Controller {
     protected Client client;
 
     private ActiveListener controllerActive;
+
+    private StopWatchController watch = new StopWatchController(this);
     
     @FXML
     public void initialize() {
@@ -122,4 +130,12 @@ public class BasicPageController implements Controller {
     }
 
 
+    public void stopSession(ActionEvent actionEvent) {
+        FactoryPage.getInstance().close();
+        FactoryPage.getInstance().showPage(PageEnum.LOGIN_PAGE);
+    }
+
+    public void clickScreen(ActionEvent actionEvent) {
+        FactoryPage.getInstance().showPage(PageEnum.SCREEN_PAGE);
+    }
 }

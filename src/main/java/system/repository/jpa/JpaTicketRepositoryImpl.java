@@ -8,6 +8,7 @@ import system.repository.TicketRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -54,6 +55,7 @@ public class JpaTicketRepositoryImpl implements TicketRepository {
     @Override
     public List<Ticket> getAllActive() {
         return em.createNamedQuery(Ticket.GET_ALL_ACTIVE, Ticket.class)
+                .setParameter("date", LocalDate.now())
                 .getResultList();
     }
 }

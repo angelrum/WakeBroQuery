@@ -41,6 +41,7 @@ public class TicketListControllerInit {
         controller.duration.setCellValueFactory(new PropertyValueFactory<TicketRow, Number>("duration"));
         controller.start.setCellValueFactory(new PropertyValueFactory<TicketRow, String>("start"));
         controller.end.setCellValueFactory(new PropertyValueFactory<TicketRow, String>("end"));
+        controller.day.setCellValueFactory(new PropertyValueFactory<TicketRow, String>("day"));
         controller.month.setCellValueFactory(new PropertyValueFactory<TicketRow, String>("month"));
         controller.count.setCellValueFactory(cellData -> {
             SpinnerCreate.getInstance().setValue(cellData.getValue());

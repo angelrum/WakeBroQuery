@@ -40,6 +40,8 @@ public class TicketEditPageController implements Controller {
 
     @FXML protected TableColumn<Ticket, Integer> monthColumn;
 
+    @FXML protected TableColumn<Ticket, Integer> dayColumn;
+
     @FXML protected TableColumn<Ticket, Integer> yearColumn;
 
     @FXML protected TableColumn<Ticket, Double> costColumn;

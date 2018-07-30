@@ -21,5 +21,5 @@ public interface ActiveListener {
 
     String getInsertNumber();
 
-    void setTotalValue(long value);
+    //void setTotalValue(long value);
 }

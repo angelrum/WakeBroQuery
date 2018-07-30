@@ -3,6 +3,7 @@ package system.controller.page.BasicPage;
 import system.controller.Queue;
 import system.controller.page.listener.ActiveListener;
 import system.controller.page.helper.ButtonSubmitEnum;
+import system.controller.page.listener.StopWatchListener;
 import system.model.Client;
 import system.view.FactoryPage;
 import system.view.PageEnum;
@@ -13,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Created by vladimir on 01.04.2018.
  */
-public class BasicPageActive implements ActiveListener {
+public class BasicPageActive implements ActiveListener, StopWatchListener {
 
     private final String TOTAL_FORMAT = "Длительность очереди %s";
 
@@ -21,7 +22,7 @@ public class BasicPageActive implements ActiveListener {
 
     public BasicPageActive(BasicPageController controller) {
         this.controller = controller;
-        Queue.getInstance().setTotalListener(this); //для определения длительности очереди
+        Queue.getInstance().setStopWatchListener(this); //для определения длительности очереди
     }
 
     public void refresh() {
@@ -81,12 +82,17 @@ public class BasicPageActive implements ActiveListener {
     }
 
     @Override
-    public void setTotalValue(long value) {
+    public void setTotalTime(long value) {
         if (value==0)
             controller.total.setText("");
         else {
             LocalTime time = LocalTime.ofSecondOfDay(value);
             controller.total.setText(String.format(TOTAL_FORMAT, time.format(DateTimeFormatter.ofPattern("mm:ss"))));
         }
+    }
+
+    @Override
+    public void setTime(String time) {
+        controller.timer.setText(time);
     }
 }

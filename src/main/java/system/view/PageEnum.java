@@ -12,6 +12,7 @@ public enum PageEnum {
     BASIC_PAGE ("Программа WakeBro Queue", MainApp.class.getResource("page/BasicPage.fxml")),
     REGISTRATION_PERSON_PAGE ("Регистрация клиента", MainApp.class.getResource("page/RegistrationPerson.fxml")),
     LOGIN_PAGE ("Вход", MainApp.class.getResource("page/Login.fxml")),
+    SCREEN_PAGE ("Очередь", MainApp.class.getResource("page/Screen.fxml")),
     CLIENT_TICKET_LIST ("Билеты пользователя", MainApp.class.getResource("page/ClientTicketList.fxml")),
     TICKET_LIST ("Доступный билеты", MainApp.class.getResource("page/TicketSelect.fxml")),
     TICKET_EDIT ("Список билетов", MainApp.class.getResource("page/TicketEditPage.fxml")),

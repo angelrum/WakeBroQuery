@@ -96,7 +96,16 @@ public class ValidationUtil {
 
         if (Objects.nonNull(ticket.getStartDate())
                 && Objects.nonNull(ticket.getEndDate())
+                && ticket.getMonth() > 0
+                && ticket.getDay() > 0)                  insertErText(err, pos, "ticket.err.duration_date_month_day", builder);
+        else if (Objects.nonNull(ticket.getStartDate())
+                && Objects.nonNull(ticket.getEndDate())
                 && ticket.getMonth() > 0)                insertErText(err, pos, "ticket.err.duration_date_month", builder);
+        else if (Objects.nonNull(ticket.getStartDate())
+                && Objects.nonNull(ticket.getEndDate())
+                && ticket.getDay() > 0)                  insertErText(err, pos, "ticket.err.duration_date_day", builder);
+        else if (ticket.getMonth() > 0
+                && ticket.getDay() > 0)                  insertErText(err, pos, "ticket.err.duration_month_day", builder);
 
         return builder.toString();
     }

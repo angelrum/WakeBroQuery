@@ -27,6 +27,8 @@ public class TicketRow {
 
     private SimpleStringProperty month = new SimpleStringProperty();
 
+    private SimpleStringProperty day = new SimpleStringProperty();
+
     private SimpleIntegerProperty count = new SimpleIntegerProperty(1);
 
     private Ticket ticket;
@@ -47,6 +49,7 @@ public class TicketRow {
         start.setValue(ticket.getStartTime()==null ? null : ticket.getStartTime().toString());
         end.setValue(ticket.getEndTime()==null ? null : ticket.getEndTime().toString());
         month.setValue(ticket.getMonth()==null ? null : ticket.getMonth().toString());
+        day.setValue(ticket.getDay()==null ? null : ticket.getDay().toString());
     }
 
 
@@ -84,6 +87,14 @@ public class TicketRow {
 
     public SimpleStringProperty monthProperty() {
         return month;
+    }
+
+    public SimpleStringProperty getDay() {
+        return day;
+    }
+
+    public SimpleStringProperty dayProperty() {
+        return day;
     }
 
     public SimpleIntegerProperty countProperty() {

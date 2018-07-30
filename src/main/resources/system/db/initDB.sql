@@ -52,6 +52,7 @@ CREATE TABLE ticket
   start_time  TIME,
   end_time    TIME,
   month       INTEGER,
+  day         INTEGER,
   year        INTEGER                   NOT NULL,
   cost        DOUBLE                    NOT NULL,
   weekendcost DOUBLE                    NOT NULL,

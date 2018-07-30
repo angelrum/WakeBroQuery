@@ -38,6 +38,8 @@ public class TicketListController implements Controller {
 
     @FXML protected TableColumn<TicketRow, String> end;
 
+    @FXML protected TableColumn<TicketRow, String> day;
+
     @FXML protected TableColumn<TicketRow, String> month;
 
     @FXML protected TableColumn<TicketRow, Integer> count;

@@ -37,6 +37,7 @@ public class MainApp extends Application {
         super.stop();
         propertyClose();
         FactoryPage.getInstance().close();
+        FactoryPage.getInstance().getThreadGroup().interrupt();
     }
 
     private void propertyClose() {
@@ -45,7 +46,7 @@ public class MainApp extends Application {
             Properties properties = Helper.getProperties(Files.newInputStream(path));
             if (Objects.nonNull(properties)
                     && properties.getProperty("database.init").equals("true")) {
-                properties.setProperty("database.init", "true");
+                properties.setProperty("database.init", "false");
                 OutputStream outputStream = Files.newOutputStream(path);
                 properties.store(outputStream, null);
                 outputStream.close();

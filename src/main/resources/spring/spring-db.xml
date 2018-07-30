@@ -25,7 +25,7 @@
         <jdbc:script encoding="utf-8" location="classpath:db/${jdbc.populateLocation}"/>
     </jdbc:initialize-database>
     -->
-    <jdbc:initialize-database data-source="dataSource" enabled="${database.init}">
+    <jdbc:initialize-database data-source="dataSource" enabled="true">
         <jdbc:script location="classpath:system/db/${jdbc.initLocation}"/>
         <jdbc:script encoding="utf-8" location="classpath:system/db/${jdbc.populateLocation}"/>
     </jdbc:initialize-database>

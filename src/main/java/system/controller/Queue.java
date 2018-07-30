@@ -2,10 +2,11 @@ package system.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.springframework.util.CollectionUtils;
-import system.controller.page.listener.ActiveListener;
+import system.controller.page.listener.StopWatchListener;
 import system.controller.to.QueueRow;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import static system.util.ValidationUtil.*;
 import static system.controller.page.helper.QueueHelper.*;
@@ -20,11 +21,13 @@ public class Queue implements QueueListener {
 
     private ObservableList<QueueRow> queueRows = FXCollections.observableArrayList();
 
+    private ObservableList<QueueRow> activeRows = FXCollections.observableArrayList();
+
     private LinkedList<QueueRow> activeQueue = new LinkedList<>();
 
     private List<QueueRow> disactiveQueue = new ArrayList<>();
 
-    private List<ActiveListener> totalListener = new ArrayList<>();
+    private List<StopWatchListener> stopWatchListeners = new ArrayList<>();
 
     private static Queue instance;
 
@@ -41,6 +44,10 @@ public class Queue implements QueueListener {
         return queueRows;
     }
 
+    public ObservableList<QueueRow> getActiveRows() {
+        return activeRows;
+    }
+
     public void insertRows(QueueRow row) {
         if (!activeQueue.isEmpty()) rowEnable(false);
         activeQueue.add(row);
@@ -49,10 +56,12 @@ public class Queue implements QueueListener {
 
     private void refreshQueue() {
         queueRows.clear();
+        activeRows.clear();
         rowEnable(true);
         queueRows.addAll(activeQueue);
         queueRows.addAll(disactiveQueue);
-        updateTotalTime(0);
+        activeRows.addAll(activeQueue);
+        updateTime(0);
     }
 
     /**
@@ -168,21 +177,34 @@ public class Queue implements QueueListener {
         return disactiveQueue;
     }
 
-    public void updateTotalTime(long value) {
+    public void updateTime(long value) {
         long total = getTotalTime();
         total -= value;
-        for (ActiveListener listener : totalListener)
-            listener.setTotalValue(total);
+
+        LocalTime localTime = LocalTime.ofSecondOfDay(value);
+        String timef = localTime.format(DateTimeFormatter.ofPattern("mm:ss"));
+
+        for (StopWatchListener listener : stopWatchListeners) {
+            listener.setTotalTime(total);
+            listener.setTime(timef);
+        }
     }
 
     private long getTotalTime() {
-        long total = 0;
-        for (QueueRow row : getActiveQueue())
-            total += row.getTickets().size() * TICKET_DURATION * 60;
-        return total;
+//        for (QueueRow row : getActiveQueue())
+//            total += row.getTickets().size() * TICKET_DURATION * 60;
+        return getActiveQueue().size() * TICKET_DURATION * 60;
     }
 
-    public void setTotalListener(ActiveListener listener) {
-        totalListener.add(listener);
+    public void setStopWatchListener(StopWatchListener listener) {
+        stopWatchListeners.add(listener);
+    }
+
+    public void removeStopWatchListener(StopWatchListener listener) {
+        this.stopWatchListeners.remove(listener);
+    }
+
+    public void clearStopWatchListener() {
+        this.stopWatchListeners.clear();
     }
 }
